@@ -20,10 +20,12 @@ import {MarkdownModule} from 'ngx-md';
 import {PartnertypeListComponent} from './components/partnertype/partnertype-list.component';
 import {PartnertypeService} from './services/partnertype.service';
 import {PartnertypeComponent} from './components/partnertype/partnertype.component';
+import {DetailEditorComponent} from './components/detail-editor/detail-editor.component';
 
 
 @NgModule({
   declarations: [
+    DetailEditorComponent,
     MarkdownPreviewComponent,
     MenuComponent,
     PartnertypeComponent,

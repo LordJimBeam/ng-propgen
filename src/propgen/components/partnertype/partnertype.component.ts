@@ -5,38 +5,34 @@ import 'rxjs/add/operator/switchMap';
 import {WorkpackageService} from '../../services/workpackage.service';
 import {PartnertypeService} from '../../services/partnertype.service';
 import {PartnerType} from '../../model/PartnerType';
+import {EditorBase} from '../editor-base/editor-base';
+import {BackendService} from '../../services/backend.service';
 
 @Component({
   selector: 'propgen-partnertype',
   templateUrl: './partnertype.component.html'
 })
-export class PartnertypeComponent implements OnInit {
+export class PartnertypeComponent extends EditorBase<PartnerType> {
+
   constructor(
-    private route: ActivatedRoute,
-    private router: Router,
-    private partnertypeService: PartnertypeService
-  ) {}
-  ngOnInit(): void {
-    let id = Number(this.route.snapshot.paramMap.get('id'));
-    if(isNaN(id)) {
-      this.partnertype = new PartnerType();
-    }
-    else {
-      this.partnertypeService.get(id).then((result) => {
-        this.partnertype = result;
-      });
-    }
+    protected route: ActivatedRoute,
+    protected router: Router,
+    protected partnertypeService: PartnertypeService
+  ) {
+    super(route);
   }
-  protected partnertype: PartnerType;
-  protected onSave() {
-    console.log(this.partnertype);
-    this.partnertypeService.save(this.partnertype)
-      .then(() => this.onCancel())
-      .catch((error) => {
-        console.error(error);
-      });
+  protected partnertype: PartnerType = new PartnerType();
+
+  protected getEntityService(): BackendService<PartnerType> {
+    return this.partnertypeService;
   }
-  protected onCancel() {
+  protected get entity(): PartnerType {
+    return this.partnertype;
+  }
+  protected set entity(entity: PartnerType) {
+    this.partnertype = entity;
+  }
+  protected routeToList() {
     this.router.navigate(['/partnertypes']);
   }
 }

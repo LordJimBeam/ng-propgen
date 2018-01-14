@@ -1,6 +1,4 @@
-<h1 class="mat-headline">Adding or editing Workpackage</h1>
-<mat-spinner *ngIf="!workpackage"></mat-spinner>
-<div class="form-container" *ngIf="workpackage">
+<propgen-detail-editor [title]="'Workpackage'" (onCancel)="onCancel()" (onSave)="onSave()" [enabled]="ready">
   <mat-form-field>
     <input matInput [(ngModel)]="workpackage.title" placeholder="Title"/>
   </mat-form-field>
@@ -12,6 +10,4 @@
   </mat-form-field>
   <propgen-markdown-preview [(mdText)]="workpackage.objectives" [placeholder]="'Objectives'"></propgen-markdown-preview>
   <propgen-markdown-preview [(mdText)]="workpackage.description" [placeholder]="'Description'"></propgen-markdown-preview>
-  <button mat-button class="mat-primary" (click)="onSave()">Save</button>
-  <button mat-button (click)="onCancel()">Cancel</button>
-</div>
+</propgen-detail-editor>

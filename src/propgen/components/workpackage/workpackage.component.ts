@@ -3,37 +3,35 @@ import {Workpackage} from '../../model/Workpackage';
 import {Router, ActivatedRoute, ParamMap} from '@angular/router';
 import 'rxjs/add/operator/switchMap';
 import {WorkpackageService} from '../../services/workpackage.service';
+import {EditorBase} from '../editor-base/editor-base';
+import {PartnerType} from '../../model/PartnerType';
+import {PartnertypeService} from '../../services/partnertype.service';
+import {BackendService} from '../../services/backend.service';
 
 @Component({
   selector: 'propgen-workpackage',
   templateUrl: './workpackage.component.html'
 })
-export class WorkpackageComponent implements OnInit {
+export class WorkpackageComponent extends EditorBase<Workpackage> {
   constructor(
-    private route: ActivatedRoute,
-    private router: Router,
-    private workpackageService: WorkpackageService
-  ) {}
-  ngOnInit(): void {
-    let id = Number(this.route.snapshot.paramMap.get('id'));
-    if(isNaN(id)) {
-      this.workpackage = new Workpackage();
-    }
-    else {
-      this.workpackageService.get(id).then((result) => {
-        this.workpackage = result;
-      });
-    }
+    protected route: ActivatedRoute,
+    protected router: Router,
+    protected workpackageService: WorkpackageService
+  ) {
+    super(route);
   }
-  protected workpackage: Workpackage;
-  protected onSave() {
-    this.workpackageService.save(this.workpackage)
-      .then(() => this.onCancel())
-      .catch((error) => {
-      console.error(error);
-    });
+  protected workpackage: Workpackage = new Workpackage();
+
+  protected getEntityService(): BackendService<Workpackage> {
+    return this.workpackageService;
   }
-  protected onCancel() {
+  protected get entity(): Workpackage {
+    return this.workpackage;
+  }
+  protected set entity(entity: Workpackage) {
+    this.workpackage = entity;
+  }
+  protected routeToList() {
     this.router.navigate(['/workpackages']);
   }
 }
