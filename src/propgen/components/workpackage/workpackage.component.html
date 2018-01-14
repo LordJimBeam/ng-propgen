@@ -8,6 +8,6 @@
   <mat-form-field>
     <input matInput [(ngModel)]="workpackage.type" placeholder="WP Type (RTD, MGMT, ...)"/>
   </mat-form-field>
-  <propgen-markdown-preview [(mdText)]="workpackage.objectives" [placeholder]="'Objectives'"></propgen-markdown-preview>
-  <propgen-markdown-preview [(mdText)]="workpackage.description" [placeholder]="'Description'"></propgen-markdown-preview>
+  <propgen-markdown-preview [(ngModel)]="workpackage.objectives" [placeholder]="'Objectives'"></propgen-markdown-preview>
+  <propgen-markdown-preview [(ngModel)]="workpackage.description" [placeholder]="'Description'"></propgen-markdown-preview>
 </propgen-detail-editor>
