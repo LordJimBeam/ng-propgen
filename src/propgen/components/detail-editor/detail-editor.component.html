@@ -1,7 +1,7 @@
 <h1 class="mat-headline">Adding or editing {{title}}</h1>
 <mat-spinner *ngIf="!enabled"></mat-spinner>
-<div class="form-container" *ngIf="enabled">
-  <ng-content></ng-content>
-  <button mat-button class="mat-primary" (click)="onSaveClick()">Save</button>
-  <button mat-button (click)="onCancelClick()">Cancel</button>
+<div class="form-container">
+  <div #propertyContainer></div>
+  <button [disabled]="!enabled" mat-button class="mat-primary" (click)="onSaveClick()">Save</button>
+  <button [disabled]="!enabled" mat-button (click)="onCancelClick()">Cancel</button>
 </div>

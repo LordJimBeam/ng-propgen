@@ -1,21 +1,21 @@
 import {Component, OnInit} from '@angular/core';
 import {SortableEntity} from '../../model/SortableEntity';
 import {Router} from '@angular/router';
-import {PartnertypeService} from '../../services/partnertype.service';
-import {PartnerType} from '../../model/PartnerType';
+import {Partner} from '../../model/Partner';
+import {PartnerService} from '../../services/partner.service';
 
-const path = '/partnertype';
+const path = '/partner';
 
 @Component({
-  selector: 'propgen-partnertype-list',
-  templateUrl: './partnertype-list.component.html'
+  selector: 'propgen-partner-list',
+  templateUrl: './partner-list.component.html'
 })
-export class PartnertypeListComponent implements OnInit {
-  constructor(private partnertypeService: PartnertypeService, private router: Router) {}
-  private data: PartnerType[];
+export class PartnerListComponent implements OnInit {
+  constructor(private partnerService: PartnerService, private router: Router) {}
+  private data: Partner[];
   protected sortableData: SortableEntity[];
   ngOnInit(): void {
-    this.partnertypeService.getAll().subscribe(
+    this.partnerService.getAll().subscribe(
       (result) => {
         this.data = result;
         this.sortableData = this.data.map((d) => {

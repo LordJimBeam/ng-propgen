@@ -1,8 +1,7 @@
-<propgen-detail-editor [title]="'Partnertype'" (onCancel)="onCancel()" (onSave)="onSave()" [enabled]="ready">
-  <mat-form-field>
-    <input matInput [(ngModel)]="partnertype.shortname" placeholder="Short name"/>
-  </mat-form-field>
-  <mat-form-field>
-    <input matInput [(ngModel)]="partnertype.description" placeholder="Description"/>
-  </mat-form-field>
+<propgen-detail-editor
+  [title]="'Partnertype'"
+  (onCancel)="onCancel()"
+  (onSave)="onSave()"
+  [enabled]="ready"
+  [(ngModel)]="partnertype">
 </propgen-detail-editor>

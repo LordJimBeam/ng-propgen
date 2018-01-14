@@ -17,7 +17,7 @@ export class WorkpackageListComponent implements OnInit {
       (result) => {
         this.data = result;
         this.sortableData = this.data.map((d) => {
-          return new SortableEntity(d.title, d.id)
+          return d.toListItem();
         });
       },
       (error) => {

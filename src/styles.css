@@ -5,6 +5,6 @@
   flex-direction: column;
 }
 
-.form-container > * {
+.form-container > * > * {
   width: 100%;
 }

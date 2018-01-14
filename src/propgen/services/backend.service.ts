@@ -19,8 +19,6 @@ export abstract class BackendService<T extends RESTModelInterface<T>> {
     return this._cachedItems.getValue();
   }
   private set cachedItems(items: T[]) {
-    console.log('setting cache');
-    console.log(items);
     this._cachedItems.next(items);
   }
   protected get cacheValid(): boolean {
@@ -79,7 +77,6 @@ export abstract class BackendService<T extends RESTModelInterface<T>> {
         this.cacheValidUntil = Date.now() + (1000 * 600);
         this._inProgress = false;
         this.cachedItems = data.object_list.map(d => this.ensureConstructor(d));
-        console.log(this.cachedItems);
       }, (error) => {
         this._inProgress = false;
         this._cachedItems.error(error);
@@ -99,7 +96,7 @@ export abstract class BackendService<T extends RESTModelInterface<T>> {
           this.updateCache(item);
           resolve();
         }, (error) => {
-          console.log(error);
+          console.error(error);
           reject(error);
         });
       } else {
@@ -131,11 +128,11 @@ export abstract class BackendService<T extends RESTModelInterface<T>> {
   protected internalCreateItem(item: T): Observable<any> {
     return this.http.post(baseUrl + this.getEndpoint() + '/', item);
   }
-  protected internalRetrieveItem(id: number): Observable<RESTSingleResponse<T>> {
-    return this.http.get<RESTSingleResponse<T>>(baseUrl + this.getEndpoint() + '/' + id + '/');
+  protected internalRetrieveItem(id: number): Observable<any> {
+    return this.http.get(baseUrl + this.getEndpoint() + '/' + id + '/');
   }
-  protected internalRetrieveAllItems(): Observable<RESTListResponse<T>> {
-    return this.http.get<RESTListResponse<T>>(baseUrl + this.getEndpoint() + '/');
+  protected internalRetrieveAllItems(): Observable<any> {
+    return this.http.get(baseUrl + this.getEndpoint() + '/');
   }
   protected internalUpdateItem(item: RESTModelInterface<T>): Observable<any> {
     return this.http.put(baseUrl + this.getEndpoint() + '/' + item.id + '/', item);

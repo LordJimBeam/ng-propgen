@@ -1,6 +1,6 @@
 export class SortableEntity {
   constructor(
-    public title: string,
-    public id: number
+    public id: number,
+    public title: string
   ) {}
 }

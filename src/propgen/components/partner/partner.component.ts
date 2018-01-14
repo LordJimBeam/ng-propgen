@@ -7,32 +7,34 @@ import {PartnertypeService} from '../../services/partnertype.service';
 import {PartnerType} from '../../model/PartnerType';
 import {EditorBase} from '../editor-base/editor-base';
 import {BackendService} from '../../services/backend.service';
+import {Partner} from '../../model/Partner';
+import {PartnerService} from '../../services/partner.service';
 
 @Component({
-  selector: 'propgen-partnertype',
-  templateUrl: './partnertype.component.html'
+  selector: 'propgen-partner',
+  templateUrl: './partner.component.html'
 })
-export class PartnertypeComponent extends EditorBase<PartnerType> {
+export class PartnerComponent extends EditorBase<Partner> {
 
   constructor(
     protected route: ActivatedRoute,
     protected router: Router,
-    protected partnertypeService: PartnertypeService
+    protected partnerService: PartnerService
   ) {
     super(route);
   }
-  protected partnertype: PartnerType = new PartnerType({});
+  private partner: Partner = new Partner({});
 
-  protected getEntityService(): BackendService<PartnerType> {
-    return this.partnertypeService;
+  protected getEntityService(): BackendService<Partner> {
+    return this.partnerService;
   }
-  protected get entity(): PartnerType {
-    return this.partnertype;
+  protected get entity(): Partner {
+    return this.partner;
   }
-  protected set entity(entity: PartnerType) {
-    this.partnertype = entity;
+  protected set entity(entity: Partner) {
+    this.partner = entity;
   }
   protected routeToList() {
-    this.router.navigate(['/partnertypes']);
+    this.router.navigate(['/partners']);
   }
 }

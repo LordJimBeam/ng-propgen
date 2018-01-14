@@ -10,7 +10,7 @@ export class WorkpackageService extends BackendService<Workpackage> {
   }
 
   protected ensureConstructor(item: Workpackage): Workpackage {
-    return new Workpackage(item.id, item.title, item.tag, item.type, item.lead, item.objectives, item.description);
+    return new Workpackage(item);
   }
   constructor(protected http: HttpClient) {
     super(http);
