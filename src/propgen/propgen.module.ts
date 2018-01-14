@@ -17,12 +17,17 @@ import {HttpClientModule} from '@angular/common/http';
 import {SortablejsModule} from 'angular-sortablejs';
 import {MarkdownPreviewComponent} from './components/markdown-preview/markdown-preview.component';
 import {MarkdownModule} from 'ngx-md';
+import {PartnertypeListComponent} from './components/partnertype/partnertype-list.component';
+import {PartnertypeService} from './services/partnertype.service';
+import {PartnertypeComponent} from './components/partnertype/partnertype.component';
 
 
 @NgModule({
   declarations: [
     MarkdownPreviewComponent,
     MenuComponent,
+    PartnertypeComponent,
+    PartnertypeListComponent,
     RootComponent,
     SortableListComponent,
     WorkpackageComponent,
@@ -49,11 +54,14 @@ import {MarkdownModule} from 'ngx-md';
     MatToolbarModule
   ],
   providers: [
+    PartnertypeService,
     WorkpackageService
   ],
   bootstrap: [],
   exports: [
     MenuComponent,
+    PartnertypeComponent,
+    PartnertypeListComponent,
     RootComponent,
     WorkpackageComponent,
     WorkpackageListComponent,
@@ -61,6 +69,14 @@ import {MarkdownModule} from 'ngx-md';
 })
 export class PropgenModule {
   static routes: Routes = [
+    {
+      path: 'partnertype/:id',
+      component: PartnertypeComponent
+    },
+    {
+      path: 'partnertypes',
+      component: PartnertypeListComponent
+    },
     {
       path: 'workpackage/:id',
       component: WorkpackageComponent

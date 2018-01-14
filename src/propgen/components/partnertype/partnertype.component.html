@@ -1,0 +1,12 @@
+<h1 class="mat-headline">Adding or editing Partnertype</h1>
+<mat-spinner *ngIf="!partnertype"></mat-spinner>
+<div class="form-container" *ngIf="partnertype">
+  <mat-form-field>
+    <input matInput [(ngModel)]="partnertype.shortname" placeholder="Short name"/>
+  </mat-form-field>
+  <mat-form-field>
+    <input matInput [(ngModel)]="partnertype.description" placeholder="Description"/>
+  </mat-form-field>
+  <button mat-button class="mat-primary" (click)="onSave()">Save</button>
+  <button mat-button (click)="onCancel()">Cancel</button>
+</div>
