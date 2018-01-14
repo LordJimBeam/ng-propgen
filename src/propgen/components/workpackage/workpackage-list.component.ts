@@ -26,17 +26,12 @@ export class WorkpackageListComponent implements OnInit {
     );
   }
   protected addWorkpackage(): void {
-    console.log('clicked add button');
     this.router.navigate(['/workpackage/add']);
   }
   protected editWorkpackage($event): void {
-    console.log('clicked edit button');
-    console.log($event);
     this.router.navigate(['/workpackage', $event.id]);
   }
   protected onReorder($event): void {
-    console.log('reordered');
-    console.log($event);
   }
 
 }

@@ -27,7 +27,6 @@ export class WorkpackageComponent implements OnInit {
   }
   protected workpackage: Workpackage;
   protected onSave() {
-    console.log(this.workpackage);
     this.workpackageService.save(this.workpackage)
       .then(() => this.onCancel())
       .catch((error) => {
