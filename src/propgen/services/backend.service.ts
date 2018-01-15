@@ -8,7 +8,7 @@ import {hasOwnProperty} from 'tslint/lib/utils';
 
 const baseUrl = 'http://localhost:8000';
 
-export abstract class BackendService<T extends RESTModelInterface<T>> {
+export abstract class BackendService<T extends RESTModelInterface> {
   constructor(protected http: HttpClient) {
     this.cacheValidUntil = 0;
   }
@@ -124,7 +124,7 @@ export abstract class BackendService<T extends RESTModelInterface<T>> {
     });
   }
   protected abstract getEndpoint(): string;
-  protected abstract ensureConstructor(item: T): T;
+  public abstract ensureConstructor(item: T): T;
   protected internalCreateItem(item: T): Observable<any> {
     return this.http.post(baseUrl + this.getEndpoint() + '/', item);
   }
@@ -134,7 +134,7 @@ export abstract class BackendService<T extends RESTModelInterface<T>> {
   protected internalRetrieveAllItems(): Observable<any> {
     return this.http.get(baseUrl + this.getEndpoint() + '/');
   }
-  protected internalUpdateItem(item: RESTModelInterface<T>): Observable<any> {
+  protected internalUpdateItem(item: T): Observable<any> {
     return this.http.put(baseUrl + this.getEndpoint() + '/' + item.id + '/', item);
   }
   protected internalDeleteItem(id: number): Observable<any> {

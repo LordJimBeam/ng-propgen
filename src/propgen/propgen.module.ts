@@ -10,38 +10,30 @@ import {RouterModule, Routes} from '@angular/router';
 import {RootComponent} from './components/root/root.component';
 import {SortableListComponent} from './components/sortable-list/sortable-list.component';
 import {WorkpackageService} from './services/workpackage.service';
-import {WorkpackageListComponent} from './components/workpackage/workpackage-list.component';
-import {WorkpackageComponent} from './components/workpackage/workpackage.component';
 import {FormsModule} from '@angular/forms';
 import {HttpClientModule} from '@angular/common/http';
 import {SortablejsModule} from 'angular-sortablejs';
 import {MarkdownModule} from 'ngx-md';
-import {PartnertypeListComponent} from './components/partnertype/partnertype-list.component';
 import {PartnertypeService} from './services/partnertype.service';
-import {PartnertypeComponent} from './components/partnertype/partnertype.component';
 import {DetailEditorComponent} from './components/detail-editor/detail-editor.component';
 import {MarkdownPreviewComponent} from './modelcreator/formcomponents/markdown-preview/markdown-preview.component';
 import {StringFormComponent} from './modelcreator/formcomponents/string.form.component';
 import {NumberFormComponent} from './modelcreator/formcomponents/number.form.component';
-import {PartnerComponent} from './components/partner/partner.component';
-import {PartnerListComponent} from './components/partner/partner-list.component';
-import {ForeignKeyModelProperty} from './modelcreator/foreign.model.property';
 import {ForeignKeyFormComponent} from './modelcreator/formcomponents/foreign.form.component';
 import {PartnerService} from './services/partner.service';
+import {AutomaticModelFormComponent} from './components/automatic-model-form/automatic-model-form.component';
+import {AutomaticModelFormListComponent} from './components/automatic-model-form-list/automatic-model-form-list.component';
+import {TextblockService} from './services/textblock.service';
 
 
 @NgModule({
   declarations: [
+    AutomaticModelFormComponent,
+    AutomaticModelFormListComponent,
     DetailEditorComponent,
     MenuComponent,
-    PartnerComponent,
-    PartnerListComponent,
-    PartnertypeComponent,
-    PartnertypeListComponent,
     RootComponent,
     SortableListComponent,
-    WorkpackageComponent,
-    WorkpackageListComponent,
 
     ForeignKeyFormComponent,
     NumberFormComponent,
@@ -72,45 +64,88 @@ import {PartnerService} from './services/partner.service';
   providers: [
     PartnerService,
     PartnertypeService,
+    TextblockService,
     WorkpackageService
   ],
   bootstrap: [],
   exports: [
     MenuComponent,
-    PartnerComponent,
-    PartnerListComponent,
-    PartnertypeComponent,
-    PartnertypeListComponent,
     RootComponent,
-    WorkpackageComponent,
-    WorkpackageListComponent,
   ]
 })
 export class PropgenModule {
   static routes: Routes = [
     {
       path: 'partner/:id',
-      component: PartnerComponent
+      component: AutomaticModelFormComponent,
+      data: {
+        title: 'Partner',
+        service: PartnerService,
+        parent: '/partners'
+      }
     },
     {
       path: 'partners',
-      component: PartnerListComponent
+      component: AutomaticModelFormListComponent,
+      data: {
+        title: 'Partners',
+        service: PartnerService,
+        path: '/partner'
+      }
     },
     {
       path: 'partnertype/:id',
-      component: PartnertypeComponent
+      component: AutomaticModelFormComponent,
+      data: {
+        title: 'Partnertype',
+        service: PartnertypeService,
+        parent: '/partnertypes'
+      }
     },
     {
       path: 'partnertypes',
-      component: PartnertypeListComponent
+      component: AutomaticModelFormListComponent,
+      data: {
+        title: 'Partnertypes',
+        service: PartnertypeService,
+        path: '/partnertype'
+      }
+    },
+    {
+      path: 'textblock/:id',
+      component: AutomaticModelFormComponent,
+      data: {
+        title: 'Textblock',
+        service: TextblockService,
+        parent: '/textblocks'
+      }
+    },
+    {
+      path: 'textblocks',
+      component: AutomaticModelFormListComponent,
+      data: {
+        title: 'Textblocks',
+        service: TextblockService,
+        path: '/textblock'
+      }
     },
     {
       path: 'workpackage/:id',
-      component: WorkpackageComponent
+      component: AutomaticModelFormComponent,
+      data: {
+        title: 'Workpackage',
+        service: WorkpackageService,
+        parent: '/workpackages'
+      }
     },
     {
       path: 'workpackages',
-      component: WorkpackageListComponent
+      component: AutomaticModelFormListComponent,
+      data: {
+        title: 'Workpackages',
+        service: WorkpackageService,
+        path: '/workpackage'
+      }
     },
     {
       path: '',

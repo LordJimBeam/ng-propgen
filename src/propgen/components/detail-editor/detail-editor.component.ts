@@ -4,12 +4,12 @@ import {
   ViewContainerRef
 } from '@angular/core';
 import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
-import {RESTModelInterface} from '../../model/RESTModelInterface';
 import {MarkdownPreviewComponent} from '../../modelcreator/formcomponents/markdown-preview/markdown-preview.component';
 import {StringFormComponent} from '../../modelcreator/formcomponents/string.form.component';
-import {ModelPropertyComponent} from '../../modelcreator/formcomponents/model.property.component';
+import {ModelPropertyComponent} from '../../modelcreator/formcomponents/model.form.component';
 import {NumberFormComponent} from '../../modelcreator/formcomponents/number.form.component';
 import {ForeignKeyFormComponent} from '../../modelcreator/formcomponents/foreign.form.component';
+import {AutogeneratableModel} from '../../model/AutogeneratableModel';
 
 
 const typeToComponentMap = new Object({
@@ -49,7 +49,7 @@ export class DetailEditorComponent implements ControlValueAccessor, AfterViewIni
 
   private viewInitialized = false;
 
-  writeValue(obj: RESTModelInterface): void {
+  writeValue(obj: AutogeneratableModel): void {
     // This method will be called by the forms API to write to the view when programmatic (model -> view) changes are requested.
     this._data = obj;
     this.createChildren();
@@ -74,7 +74,7 @@ export class DetailEditorComponent implements ControlValueAccessor, AfterViewIni
       // we need to resolve the factory for each component only once, so store them in here
       let factories = {};
 
-      for(let prop of this._data.properties) {
+      for(let prop of this._data.getProperties()) {
         if(!prop.component) {
           // instance.constructor.name gets the TS class name during JS runtime. Object keys are always string
           if(prop.constructor.name in typeToComponentMap) {
@@ -102,11 +102,11 @@ export class DetailEditorComponent implements ControlValueAccessor, AfterViewIni
   }
 
   private createdChildren = false;
-  private _data: RESTModelInterface;
-  private get data(): RESTModelInterface {
+  private _data: AutogeneratableModel;
+  private get data(): AutogeneratableModel {
     return this._data;
   };
-  private set data(d: RESTModelInterface) {
+  private set data(d: AutogeneratableModel) {
     if(d !== this._data) {
       this._data = d;
       this.onChange(d);

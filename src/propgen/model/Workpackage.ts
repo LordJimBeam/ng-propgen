@@ -1,15 +1,14 @@
-import {RESTModelInterface} from './RESTModelInterface';
 import {ModelProperty} from '../modelcreator/model.property';
-import {PartnerType} from './PartnerType';
 import {StringModelProperty} from '../modelcreator/string.model.property';
 import {MarkdownModelProperty} from '../modelcreator/markdown.model.property';
 import {ForeignKeyModelProperty} from '../modelcreator/foreign.model.property';
 import {Partner} from './Partner';
 import {PartnerService} from '../services/partner.service';
 import {SortableEntity} from './SortableEntity';
+import {AutogeneratableModel} from './AutogeneratableModel';
 
-export class Workpackage implements RESTModelInterface<Workpackage> {
-  public properties: ModelProperty[] = [
+export class Workpackage extends AutogeneratableModel {
+  protected static _properties: ModelProperty[] = [
     new StringModelProperty({
       name: 'title',
       maxLength: 255
@@ -37,17 +36,10 @@ export class Workpackage implements RESTModelInterface<Workpackage> {
       service: PartnerService
     })
   ];
-  public id: number = 0;
-  public title: string = '';
-  public tag: string = '';
-  public type: string = 'RTD';
-  public lead: number = 0;
-  public objectives: string = '';
-  public description: string = '';
-  constructor(init?: Partial<PartnerType>) {
-    Object.assign(this, init);
+  public getProperties() {
+    return Workpackage._properties;
   }
   public toListItem(): SortableEntity {
-    return new SortableEntity(this.id, this.title);
+    return new SortableEntity(this.id, this['title']);
   }
 }

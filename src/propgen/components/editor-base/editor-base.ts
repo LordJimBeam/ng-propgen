@@ -2,8 +2,9 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {OnInit} from '@angular/core';
 import {RESTModelInterface} from '../../model/RESTModelInterface';
 import {BackendService} from '../../services/backend.service';
+import {AutogeneratableModel} from '../../model/AutogeneratableModel';
 
-export abstract class EditorBase<T extends RESTModelInterface<T>> implements OnInit {
+export abstract class EditorBase<T extends AutogeneratableModel> implements OnInit {
   constructor(
     protected route: ActivatedRoute
   ) {}

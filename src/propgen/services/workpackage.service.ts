@@ -9,7 +9,7 @@ export class WorkpackageService extends BackendService<Workpackage> {
     return '/Workpackage';
   }
 
-  protected ensureConstructor(item: Workpackage): Workpackage {
+  public ensureConstructor(item: Workpackage): Workpackage {
     return new Workpackage(item);
   }
   constructor(protected http: HttpClient) {

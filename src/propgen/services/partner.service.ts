@@ -14,7 +14,7 @@ export class PartnerService extends BackendService<Partner> {
     return '/Partner';
   }
 
-  protected ensureConstructor(item: Partner): Partner {
+  public ensureConstructor(item: Partner): Partner {
     return new Partner(item);
   }
 

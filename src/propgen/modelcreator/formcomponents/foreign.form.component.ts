@@ -1,6 +1,6 @@
 import {Component, EventEmitter, Injector, Input, Output} from '@angular/core';
 import {StringModelProperty} from '../string.model.property';
-import {ModelPropertyComponent} from './model.property.component';
+import {ModelPropertyComponent} from './model.form.component';
 import {ModelProperty} from '../model.property';
 import {NumberModelProperty} from '../number.model.property';
 import {ForeignKeyModelProperty} from '../foreign.model.property';
@@ -9,7 +9,7 @@ import {SortableEntity} from '../../model/SortableEntity';
 
 @Component({
   selector: 'propgen-foreign-key-form-input',
-  template: '<mat-form-field>\n' +
+  template: '<mat-form-field hintLabel="{{helpText}}">\n' +
   '  <mat-select [(ngModel)]="data" placeholder="{{placeholder}}">' +
   '    <mat-option [value]="0">-</mat-option>' +
   '    <mat-option *ngFor="let e of entityList" [value]="e.id">{{ e.title }}</mat-option>' +
@@ -30,6 +30,7 @@ export class ForeignKeyFormComponent implements ModelPropertyComponent {
   }
   @Output() dataChange = new EventEmitter<number>();
   private placeholder: string;
+  private helpText: string;
   private _propertyDescription: ForeignKeyModelProperty;
   @Input() set propertyDescription(desc: ForeignKeyModelProperty) {
     this._propertyDescription = desc;
@@ -38,6 +39,9 @@ export class ForeignKeyFormComponent implements ModelPropertyComponent {
     }
     else {
       this.placeholder = desc.name.charAt(0).toUpperCase() + desc.name.slice(1);
+    }
+    if(desc.helpText) {
+      this.helpText = desc.helpText;
     }
     const dataService = (<BackendService<any>>this.injector.get(desc.service));
     dataService.getAll().subscribe((data) => {

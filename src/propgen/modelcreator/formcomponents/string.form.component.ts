@@ -1,11 +1,11 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {StringModelProperty} from '../string.model.property';
-import {ModelPropertyComponent} from './model.property.component';
+import {ModelPropertyComponent} from './model.form.component';
 import {ModelProperty} from '../model.property';
 
 @Component({
   selector: 'propgen-string-form-input',
-  template: '<mat-form-field>\n' +
+  template: '<mat-form-field hintLabel="{{helpText}}">\n' +
   '  <input matInput [(ngModel)]="data" placeholder="{{placeholder}}"/>\n' +
   '</mat-form-field>'
 })
@@ -22,6 +22,7 @@ export class StringFormComponent implements ModelPropertyComponent {
   }
   @Output() dataChange = new EventEmitter<string>();
   private placeholder: string;
+  private helpText: string;
   private _propertyDescription: StringModelProperty;
   @Input() set propertyDescription(desc: StringModelProperty) {
     this._propertyDescription = desc;
@@ -30,6 +31,9 @@ export class StringFormComponent implements ModelPropertyComponent {
     }
     else {
       this.placeholder = desc.name.charAt(0).toUpperCase() + desc.name.slice(1);
+    }
+    if(desc.helpText) {
+      this.helpText = desc.helpText;
     }
   };
   public setPropertyDescription(desc: ModelProperty) {

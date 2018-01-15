@@ -1,8 +1,5 @@
-import {ModelProperty} from '../modelcreator/model.property';
 import {SortableEntity} from './SortableEntity';
 
-export interface RESTModelInterface<T = {}> {
+export interface RESTModelInterface {
   id: number;
-  properties: ModelProperty[];
-  toListItem(): SortableEntity;
 }

@@ -1,4 +1,3 @@
-import {RESTModelInterface} from './RESTModelInterface';
 import {ModelProperty} from '../modelcreator/model.property';
 import {PartnerType} from './PartnerType';
 import {StringModelProperty} from '../modelcreator/string.model.property';
@@ -6,36 +5,11 @@ import {ForeignKeyModelProperty} from '../modelcreator/foreign.model.property';
 import {PartnertypeService} from '../services/partnertype.service';
 import {MarkdownModelProperty} from '../modelcreator/markdown.model.property';
 import {NumberModelProperty} from '../modelcreator/number.model.property';
-import {Sort} from '@angular/material';
 import {SortableEntity} from './SortableEntity';
+import {AutogeneratableModel} from './AutogeneratableModel';
 
-export class Partner implements RESTModelInterface<Partner> {
-  public id: number = 0;
-  public partnername: string;
-  public shortname: string;
-  public partnertype: number;
-  public pic: string;
-  public description: string;
-  public organization: string;
-  public individuals: string;
-  public partnerpublications: string;
-  public partnerprojects: string;
-  public infrastructure: string;
-  public country: string;
-  public PMcost: number;
-  public reimbursement_rate: number;
-  public _other_direct_cost: number;
-  public other_direct_cost_explanation: string;
-  public subcontract_cost: number;
-  public subcontract_cost_explanation: string;
-  public financial_support_3rd: number;
-  public financial_support_3rd_explanation: string;
-  public inkind_contributions: number;
-  public inkind_contributions_explanations: string;
-  public special_uni_cost: number;
-  public special_uni_cost_explanation: string;
-  public _requested_contribution: number;
-  public properties: ModelProperty[] = [
+export class Partner extends AutogeneratableModel {
+  protected static _properties: ModelProperty[] = [
     new StringModelProperty({
       name: 'partnername',
       maxLength: 255
@@ -178,10 +152,11 @@ export class Partner implements RESTModelInterface<Partner> {
         'allows you to do. This is usually not recommended.'
     })
   ];
-  public constructor(init?: Partial<Partner>) {
-    Object.assign(this, init);
+  public getProperties() {
+    return Partner._properties;
   }
+
   public toListItem(): SortableEntity {
-    return new SortableEntity(this.id, this.shortname);
+    return new SortableEntity(this.id, this['shortname']);
   }
 }

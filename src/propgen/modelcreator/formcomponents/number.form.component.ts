@@ -1,12 +1,12 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {StringModelProperty} from '../string.model.property';
-import {ModelPropertyComponent} from './model.property.component';
+import {ModelPropertyComponent} from './model.form.component';
 import {ModelProperty} from '../model.property';
 import {NumberModelProperty} from '../number.model.property';
 
 @Component({
   selector: 'propgen-number-form-input',
-  template: '<mat-form-field>\n' +
+  template: '<mat-form-field hintLabel="{{helpText}}">\n' +
   '  <input matInput type="number" step="step" [(ngModel)]="data" placeholder="{{placeholder}}"/>\n' +
   '</mat-form-field>'
 })
@@ -23,6 +23,7 @@ export class NumberFormComponent implements ModelPropertyComponent {
   }
   @Output() dataChange = new EventEmitter<number>();
   private placeholder: string;
+  private helpText: string;
   private _propertyDescription: NumberModelProperty;
   @Input() set propertyDescription(desc: NumberModelProperty) {
     this._propertyDescription = desc;
@@ -34,6 +35,9 @@ export class NumberFormComponent implements ModelPropertyComponent {
     }
     if(desc.decimalPlaces > 0) {
       this.step = Math.pow(10, -desc.decimalPlaces);
+    }
+    if(desc.helpText) {
+      this.helpText = desc.helpText;
     }
   };
   public setPropertyDescription(desc: ModelProperty) {
