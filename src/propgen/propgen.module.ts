@@ -28,6 +28,7 @@ import {TaskService} from './services/task.service';
 import {ProducabletypeService} from './services/producabletype.service';
 import {TextFormComponent} from './modelcreator/formcomponents/text.form.component';
 import {DisseminationtypeService} from './services/disseminationtype.service';
+import {DeliverableService} from './services/deliverable.service';
 import {ForeignManyFormComponent} from './modelcreator/formcomponents/foreign-many.form.component';
 
 
@@ -95,6 +96,7 @@ function automaticModelRoute(path: string, title: string, service: any) : Routes
     MatToolbarModule
   ],
   providers: [
+    DeliverableService,
     DisseminationtypeService,
     PartnerService,
     PartnertypeService,
@@ -111,6 +113,7 @@ function automaticModelRoute(path: string, title: string, service: any) : Routes
 })
 export class PropgenModule {
   static routes: Routes = [].concat.apply([], [
+    automaticModelRoute('deliverable', 'Deliverable', DeliverableService),
     automaticModelRoute('disseminationtype', 'Dissemination type', DisseminationtypeService),
     automaticModelRoute('partner', 'Partner', PartnerService),
     automaticModelRoute('partnertype', 'Partnertype', PartnertypeService),
