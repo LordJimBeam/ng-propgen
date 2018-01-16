@@ -39,6 +39,7 @@ import {EmailFormComponent} from './modelcreator/formcomponents/email.form.compo
 import {ProjectService} from './services/project.service';
 import {SettingService} from './services/setting.service';
 import {BooleanFormComponent} from './modelcreator/formcomponents/boolean.form.component';
+import {TemplateService} from './services/template.service';
 
 
 function automaticModelRoute(path: string, title: string, service: any) : Routes {
@@ -119,6 +120,7 @@ function automaticModelRoute(path: string, title: string, service: any) : Routes
     SettingService,
     TaskService,
     TaskPartnerPMService,
+    TemplateService,
     TextblockService,
     WorkpackageService
   ],
@@ -142,11 +144,12 @@ export class PropgenModule {
     automaticModelRoute('setting', 'Setting', SettingService),
     automaticModelRoute('task', 'Task', TaskService),
     automaticModelRoute('taskpartnerpm', 'TaskPartnerPM', TaskPartnerPMService),
+    automaticModelRoute('template', 'Template', TemplateService),
     automaticModelRoute('textblock', 'Textblock', TextblockService),
     automaticModelRoute('workpackage', 'Workpackage', WorkpackageService),
     [{
       path: '',
       component: MenuComponent
     }]
-  ])
+  ]);
 }
