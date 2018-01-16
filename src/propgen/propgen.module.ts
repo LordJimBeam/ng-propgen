@@ -2,7 +2,8 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import {MenuComponent} from './components/menu/menu.component';
 import {
-  MatButtonModule, MatCardModule, MatExpansionModule, MatFormFieldModule, MatIconModule, MatInputModule, MatListModule, MatMenuModule,
+  MatButtonModule, MatCardModule, MatCheckboxModule, MatExpansionModule, MatFormFieldModule, MatIconModule, MatInputModule, MatListModule,
+  MatMenuModule,
   MatProgressSpinnerModule, MatSelectModule,
   MatToolbarModule
 } from '@angular/material';
@@ -37,7 +38,7 @@ import {MilestonePartnerTaskPMService} from './services/milestonepartnertaskpm.s
 import {EmailFormComponent} from './modelcreator/formcomponents/email.form.component';
 import {ProjectService} from './services/project.service';
 import {SettingService} from './services/setting.service';
-
+import {BooleanFormComponent} from './modelcreator/formcomponents/boolean.form.component';
 
 
 function automaticModelRoute(path: string, title: string, service: any) : Routes {
@@ -60,7 +61,7 @@ function automaticModelRoute(path: string, title: string, service: any) : Routes
         path: path
       }
     }
-  ]
+  ];
 }
 
 
@@ -74,6 +75,7 @@ function automaticModelRoute(path: string, title: string, service: any) : Routes
     RootComponent,
     SortableListComponent,
 
+    BooleanFormComponent,
     EmailFormComponent,
     ForeignKeyFormComponent,
     ForeignManyFormComponent,
@@ -93,6 +95,7 @@ function automaticModelRoute(path: string, title: string, service: any) : Routes
 
     MatButtonModule,
     MatCardModule,
+    MatCheckboxModule,
     MatExpansionModule,
     MatFormFieldModule,
     MatIconModule,

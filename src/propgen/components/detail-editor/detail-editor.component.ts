@@ -13,9 +13,11 @@ import {AutogeneratableModel} from '../../model/AutogeneratableModel';
 import {TextFormComponent} from '../../modelcreator/formcomponents/text.form.component';
 import {ForeignManyFormComponent} from '../../modelcreator/formcomponents/foreign-many.form.component';
 import {EmailFormComponent} from '../../modelcreator/formcomponents/email.form.component';
+import {BooleanFormComponent} from '../../modelcreator/formcomponents/boolean.form.component';
 
 
 const typeToComponentMap = new Object({
+  BooleanModelProperty: BooleanFormComponent,
   EmailModelProperty: EmailFormComponent,
   ForeignKeyModelProperty: ForeignKeyFormComponent,
   ForeignManyModelProperty: ForeignManyFormComponent,
@@ -105,7 +107,7 @@ export class DetailEditorComponent implements ControlValueAccessor, AfterViewIni
 
     }
   }
-  
+
   private _data: AutogeneratableModel;
   private get data(): AutogeneratableModel {
     return this._data;
