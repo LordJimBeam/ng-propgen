@@ -46,8 +46,6 @@ export class ForeignKeyFormComponent implements ModelPropertyComponent {
     const dataService = (<BackendService<any>>this.injector.get(desc.service));
     dataService.getAll().subscribe((data) => {
       this.entityList = data.map((x) => x.toListItem());
-      console.log(data);
-      console.log(this.entityList);
     });
   };
   public setPropertyDescription(desc: ModelProperty) {
