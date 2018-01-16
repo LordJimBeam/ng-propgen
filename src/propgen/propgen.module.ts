@@ -28,6 +28,32 @@ import {TaskService} from './services/task.service';
 import {TextFormComponent} from './modelcreator/formcomponents/text.form.component';
 
 
+
+function automaticModelRoute(path: string, title: string, service: any) : Routes {
+  return [
+    {
+      path: path + '/:id',
+      component: AutomaticModelFormComponent,
+      data: {
+        title: title,
+        service: service,
+        parent: path + 's'
+      }
+    },
+    {
+      path: path + 's',
+      component: AutomaticModelFormListComponent,
+      data: {
+        title: title + 's',
+        service: service,
+        path: path
+      }
+    }
+  ]
+}
+
+
+
 @NgModule({
   declarations: [
     AutomaticModelFormComponent,
@@ -78,100 +104,15 @@ import {TextFormComponent} from './modelcreator/formcomponents/text.form.compone
   ]
 })
 export class PropgenModule {
-  static routes: Routes = [
-    {
-      path: 'partner/:id',
-      component: AutomaticModelFormComponent,
-      data: {
-        title: 'Partner',
-        service: PartnerService,
-        parent: '/partners'
-      }
-    },
-    {
-      path: 'partners',
-      component: AutomaticModelFormListComponent,
-      data: {
-        title: 'Partners',
-        service: PartnerService,
-        path: '/partner'
-      }
-    },
-    {
-      path: 'partnertype/:id',
-      component: AutomaticModelFormComponent,
-      data: {
-        title: 'Partnertype',
-        service: PartnertypeService,
-        parent: '/partnertypes'
-      }
-    },
-    {
-      path: 'partnertypes',
-      component: AutomaticModelFormListComponent,
-      data: {
-        title: 'Partnertypes',
-        service: PartnertypeService,
-        path: '/partnertype'
-      }
-    },
-    {
-      path: 'task/:id',
-      component: AutomaticModelFormComponent,
-      data: {
-        title: 'Task',
-        service: TaskService,
-        parent: '/tasks'
-      }
-    },
-    {
-      path: 'tasks',
-      component: AutomaticModelFormListComponent,
-      data: {
-        title: 'Tasks',
-        service: TaskService,
-        path: '/task'
-      }
-    },
-    {
-      path: 'textblock/:id',
-      component: AutomaticModelFormComponent,
-      data: {
-        title: 'Textblock',
-        service: TextblockService,
-        parent: '/textblocks'
-      }
-    },
-    {
-      path: 'textblocks',
-      component: AutomaticModelFormListComponent,
-      data: {
-        title: 'Textblocks',
-        service: TextblockService,
-        path: '/textblock'
-      }
-    },
-    {
-      path: 'workpackage/:id',
-      component: AutomaticModelFormComponent,
-      data: {
-        title: 'Workpackage',
-        service: WorkpackageService,
-        parent: '/workpackages'
-      }
-    },
-    {
-      path: 'workpackages',
-      component: AutomaticModelFormListComponent,
-      data: {
-        title: 'Workpackages',
-        service: WorkpackageService,
-        path: '/workpackage'
-      }
-    },
-    {
+  static routes: Routes = [].concat.apply([], [
+    automaticModelRoute('partner', 'Partner', PartnerService),
+    automaticModelRoute('partnertype', 'Partnertype', PartnertypeService),
+    automaticModelRoute('task', 'Task', TaskService),
+    automaticModelRoute('textblock', 'Textblock', TextblockService),
+    automaticModelRoute('workpackage', 'Workpackage', WorkpackageService),
+    [{
       path: '',
       component: MenuComponent
-    }
-  ]
+    }]
+  ])
 }
