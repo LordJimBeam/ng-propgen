@@ -25,6 +25,7 @@ import {AutomaticModelFormComponent} from './components/automatic-model-form/aut
 import {AutomaticModelFormListComponent} from './components/automatic-model-form-list/automatic-model-form-list.component';
 import {TextblockService} from './services/textblock.service';
 import {TaskService} from './services/task.service';
+import {TextFormComponent} from './modelcreator/formcomponents/text.form.component';
 
 
 @NgModule({
@@ -40,6 +41,7 @@ import {TaskService} from './services/task.service';
     NumberFormComponent,
     MarkdownPreviewComponent,
     StringFormComponent,
+    TextFormComponent
   ],
   imports: [
     BrowserModule,

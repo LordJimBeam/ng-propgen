@@ -10,13 +10,15 @@ import {ModelPropertyComponent} from '../../modelcreator/formcomponents/model.fo
 import {NumberFormComponent} from '../../modelcreator/formcomponents/number.form.component';
 import {ForeignKeyFormComponent} from '../../modelcreator/formcomponents/foreign.form.component';
 import {AutogeneratableModel} from '../../model/AutogeneratableModel';
+import {TextFormComponent} from '../../modelcreator/formcomponents/text.form.component';
 
 
 const typeToComponentMap = new Object({
   ForeignKeyModelProperty: ForeignKeyFormComponent,
   NumberModelProperty: NumberFormComponent,
   MarkdownModelProperty: MarkdownPreviewComponent,
-  StringModelProperty: StringFormComponent
+  StringModelProperty: StringFormComponent,
+  TextModelProperty: TextFormComponent
 });
 const dynamicComponents = Object.keys(typeToComponentMap).map((key) => typeToComponentMap[key]);
 
@@ -73,7 +75,6 @@ export class DetailEditorComponent implements ControlValueAccessor, AfterViewIni
 
       // we need to resolve the factory for each component only once, so store them in here
       let factories = {};
-
       for(let prop of this._data.getProperties()) {
         if(!prop.component) {
           // instance.constructor.name gets the TS class name during JS runtime. Object keys are always string
@@ -82,7 +83,7 @@ export class DetailEditorComponent implements ControlValueAccessor, AfterViewIni
           }
           else {
             console.log(prop);
-            console.log(prop.name + ' (' + prop.constructor.name + ') has an empty component, skipping');
+            console.log(prop.name + ' (' + prop.constructor.name + ') has no attached component, skipping');
             continue;
           }
         }
