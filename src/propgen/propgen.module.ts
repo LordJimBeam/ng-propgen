@@ -24,6 +24,7 @@ import {PartnerService} from './services/partner.service';
 import {AutomaticModelFormComponent} from './components/automatic-model-form/automatic-model-form.component';
 import {AutomaticModelFormListComponent} from './components/automatic-model-form-list/automatic-model-form-list.component';
 import {TextblockService} from './services/textblock.service';
+import {TaskService} from './services/task.service';
 
 
 @NgModule({
@@ -64,6 +65,7 @@ import {TextblockService} from './services/textblock.service';
   providers: [
     PartnerService,
     PartnertypeService,
+    TaskService,
     TextblockService,
     WorkpackageService
   ],
@@ -109,6 +111,24 @@ export class PropgenModule {
         title: 'Partnertypes',
         service: PartnertypeService,
         path: '/partnertype'
+      }
+    },
+    {
+      path: 'task/:id',
+      component: AutomaticModelFormComponent,
+      data: {
+        title: 'Task',
+        service: TaskService,
+        parent: '/tasks'
+      }
+    },
+    {
+      path: 'tasks',
+      component: AutomaticModelFormListComponent,
+      data: {
+        title: 'Tasks',
+        service: TaskService,
+        path: '/task'
       }
     },
     {
