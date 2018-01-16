@@ -36,6 +36,7 @@ import {TaskPartnerPMService} from './services/taskpartnerpm.service';
 import {MilestonePartnerTaskPMService} from './services/milestonepartnertaskpm.service';
 import {EmailFormComponent} from './modelcreator/formcomponents/email.form.component';
 import {ProjectService} from './services/project.service';
+import {SettingService} from './services/setting.service';
 
 
 
@@ -112,6 +113,7 @@ function automaticModelRoute(path: string, title: string, service: any) : Routes
     PartnertypeService,
     ProducabletypeService,
     ProjectService,
+    SettingService,
     TaskService,
     TaskPartnerPMService,
     TextblockService,
@@ -134,6 +136,7 @@ export class PropgenModule {
     automaticModelRoute('partnertype', 'Partnertype', PartnertypeService),
     automaticModelRoute('producabletype', 'Producable type', ProducabletypeService),
     automaticModelRoute('project', 'Project', ProjectService),
+    automaticModelRoute('setting', 'Setting', SettingService),
     automaticModelRoute('task', 'Task', TaskService),
     automaticModelRoute('taskpartnerpm', 'TaskPartnerPM', TaskPartnerPMService),
     automaticModelRoute('textblock', 'Textblock', TextblockService),
