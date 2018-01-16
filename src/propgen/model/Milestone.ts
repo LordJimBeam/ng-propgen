@@ -9,6 +9,9 @@ import {PartnerService} from '../services/partner.service';
 import {TaskService} from '../services/task.service';
 import {ForeignManyModelProperty} from '../modelcreator/foreign-many.model.property';
 import {WorkpackageService} from '../services/workpackage.service';
+import {Partner} from './Partner';
+import {Task} from './Task';
+import {Workpackage} from './Workpackage';
 
 export class Milestone extends AutogeneratableModel {
   protected static _properties: ModelProperty[] = [
@@ -29,14 +32,17 @@ export class Milestone extends AutogeneratableModel {
     }),
     new ForeignKeyModelProperty({
       name: 'lead',
+      type: Partner,
       service: PartnerService
     }),
     new ForeignKeyModelProperty({
       name: 'maintask',
+      type: Task,
       service: TaskService
     }),
     new ForeignManyModelProperty({
       name: 'secondarytasks',
+      type: Task,
       service: TaskService
     }),
     new MarkdownModelProperty({
@@ -44,6 +50,7 @@ export class Milestone extends AutogeneratableModel {
     }),
     new ForeignKeyModelProperty({
       name: 'wp',
+      type: Workpackage,
       service: WorkpackageService
     })
   ];

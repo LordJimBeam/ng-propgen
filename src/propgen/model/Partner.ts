@@ -155,8 +155,9 @@ export class Partner extends AutogeneratableModel {
   public getProperties() {
     return Partner._properties;
   }
-
-  public toListItem(): SortableEntity {
-    return new SortableEntity(this.id, this['shortname']);
+  toListItem() {
+    return new Promise<SortableEntity>((resolve) => {
+      resolve(new SortableEntity(this.id, this['partnername'] + ' (' + this['shortname'] + ')'));
+    });
   }
 }

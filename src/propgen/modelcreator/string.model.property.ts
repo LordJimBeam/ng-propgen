@@ -4,7 +4,6 @@ import {StringFormComponent} from './formcomponents/string.form.component';
 export class StringModelProperty extends ModelProperty<string> {
   public minLength: number;
   public maxLength: number;
-  public component: any;
   public constructor(init?: Partial<StringModelProperty>) {
     super();
     Object.assign(this, init);

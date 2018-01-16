@@ -1,6 +1,5 @@
 import {AutogeneratableModel} from './AutogeneratableModel';
 import {ModelProperty} from '../modelcreator/model.property';
-import {SortableEntity} from './SortableEntity';
 import {StringModelProperty} from '../modelcreator/string.model.property';
 import {NumberModelProperty} from '../modelcreator/number.model.property';
 import {ForeignKeyModelProperty} from '../modelcreator/foreign.model.property';
@@ -48,9 +47,4 @@ export class Task extends AutogeneratableModel {
   getProperties(): ModelProperty[] {
     return Task._properties;
   }
-
-  toListItem(): SortableEntity {
-    return new SortableEntity(this.id, this['title']);
-  }
-
 }

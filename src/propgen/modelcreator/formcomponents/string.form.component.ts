@@ -9,7 +9,7 @@ import {ModelProperty} from '../model.property';
   '  <input matInput [(ngModel)]="data" placeholder="{{placeholder}}"/>\n' +
   '</mat-form-field>'
 })
-export class StringFormComponent implements ModelPropertyComponent {
+export class StringFormComponent extends ModelPropertyComponent {
   private _data: string;
   get data(): string {
     return this._data;
@@ -21,20 +21,11 @@ export class StringFormComponent implements ModelPropertyComponent {
     }
   }
   @Output() dataChange = new EventEmitter<string>();
-  private placeholder: string;
-  private helpText: string;
   private _propertyDescription: StringModelProperty;
   @Input() set propertyDescription(desc: StringModelProperty) {
     this._propertyDescription = desc;
-    if(desc.verboseName) {
-      this.placeholder = desc.verboseName;
-    }
-    else {
-      this.placeholder = desc.name.charAt(0).toUpperCase() + desc.name.slice(1);
-    }
-    if(desc.helpText) {
-      this.helpText = desc.helpText;
-    }
+    this.updatePlaceholder(desc);
+    this.updateHelpText(desc);
   };
   public setPropertyDescription(desc: ModelProperty) {
     this.propertyDescription = (<StringModelProperty>desc);

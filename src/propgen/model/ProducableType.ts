@@ -21,9 +21,9 @@ export class ProducableType extends AutogeneratableModel {
   getProperties(): ModelProperty[] {
     return ProducableType._properties;
   }
-
-  toListItem(): SortableEntity {
-    return new SortableEntity(this.id, this['short']);
+  toListItem() {
+    return new Promise<SortableEntity>((resolve) => {
+      resolve(new SortableEntity(this.id, this['long'] + ' (' + this['short'] + ')'));
+    });
   }
-
 }

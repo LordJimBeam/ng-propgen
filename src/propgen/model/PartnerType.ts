@@ -20,7 +20,9 @@ export class PartnerType extends AutogeneratableModel {
   public getProperties(): ModelProperty[] {
     return PartnerType._properties;
   }
-  public toListItem(): SortableEntity {
-    return new SortableEntity(this.id, this['shortname']);
+  toListItem() {
+    return new Promise<SortableEntity>((resolve) => {
+      resolve(new SortableEntity(this.id, this['shortname'] + ' ' + this['description']));
+    });
   }
 }

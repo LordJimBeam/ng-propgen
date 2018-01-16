@@ -4,5 +4,5 @@ export abstract class ModelProperty<T = {}> {
   public helpText: string;
   public defaultValue: T;
   public abstract isValid(value: T): boolean;
-  public abstract component: any;
+  public component: any;
 }

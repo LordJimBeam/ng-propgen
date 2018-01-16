@@ -9,7 +9,7 @@ import {MarkdownModelProperty} from '../../markdown.model.property';
   templateUrl: './markdown-preview.component.html',
   styleUrls: ['./markdown-preview.component.css']
 })
-export class MarkdownPreviewComponent implements ModelPropertyComponent {
+export class MarkdownPreviewComponent extends ModelPropertyComponent {
   get data() {
     return this.text;
   }
@@ -21,20 +21,11 @@ export class MarkdownPreviewComponent implements ModelPropertyComponent {
   }
   @Output() dataChange = new EventEmitter<string>();
   private text: string;
-  private placeholder: string;
-  private helpText: string;
   private _propertyDescription: MarkdownModelProperty;
   @Input() set propertyDescription(desc: MarkdownModelProperty) {
     this._propertyDescription = desc;
-    if(desc.verboseName) {
-      this.placeholder = desc.verboseName;
-    }
-    else {
-      this.placeholder = desc.name.charAt(0).toUpperCase() + desc.name.slice(1);
-    }
-    if(desc.helpText) {
-      this.helpText = desc.helpText;
-    }
+    this.updatePlaceholder(desc);
+    this.updateHelpText(desc);
   };
   public setPropertyDescription(desc: ModelProperty) {
     this.propertyDescription = (<MarkdownModelProperty>desc);

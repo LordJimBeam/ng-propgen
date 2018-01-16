@@ -33,7 +33,13 @@ export class Textblock extends AutogeneratableModel {
   getProperties() {
     return Textblock._properties;
   }
-  toListItem(): SortableEntity {
-    return new SortableEntity(this.id, this['name']);
+  toListItem() {
+    return new Promise<SortableEntity>((resolve) => {
+      let title = this['name'];
+      if(this['description']) {
+        title += ' (' + this['description'].substring(0, 50) + ')';
+      }
+      resolve(new SortableEntity(this.id, title));
+    });
   }
 }

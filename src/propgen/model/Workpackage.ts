@@ -39,7 +39,4 @@ export class Workpackage extends AutogeneratableModel {
   public getProperties() {
     return Workpackage._properties;
   }
-  public toListItem(): SortableEntity {
-    return new SortableEntity(this.id, this['title']);
-  }
 }

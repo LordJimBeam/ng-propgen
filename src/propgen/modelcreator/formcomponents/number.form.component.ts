@@ -10,7 +10,7 @@ import {NumberModelProperty} from '../number.model.property';
   '  <input matInput type="number" step="step" [(ngModel)]="data" placeholder="{{placeholder}}"/>\n' +
   '</mat-form-field>'
 })
-export class NumberFormComponent implements ModelPropertyComponent {
+export class NumberFormComponent extends ModelPropertyComponent {
   private _data: number;
   get data(): number {
     return this._data;
@@ -22,23 +22,11 @@ export class NumberFormComponent implements ModelPropertyComponent {
     }
   }
   @Output() dataChange = new EventEmitter<number>();
-  private placeholder: string;
-  private helpText: string;
   private _propertyDescription: NumberModelProperty;
   @Input() set propertyDescription(desc: NumberModelProperty) {
     this._propertyDescription = desc;
-    if(desc.verboseName) {
-      this.placeholder = desc.verboseName;
-    }
-    else {
-      this.placeholder = desc.name.charAt(0).toUpperCase() + desc.name.slice(1);
-    }
-    if(desc.decimalPlaces > 0) {
-      this.step = Math.pow(10, -desc.decimalPlaces);
-    }
-    if(desc.helpText) {
-      this.helpText = desc.helpText;
-    }
+    this.updatePlaceholder(desc);
+    this.updateHelpText(desc);
   };
   public setPropertyDescription(desc: ModelProperty) {
     this.propertyDescription = (<NumberModelProperty>desc);

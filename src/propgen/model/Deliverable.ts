@@ -10,6 +10,11 @@ import {ProducabletypeService} from '../services/producabletype.service';
 import {DisseminationtypeService} from '../services/disseminationtype.service';
 import {WorkpackageService} from '../services/workpackage.service';
 import {ForeignManyModelProperty} from '../modelcreator/foreign-many.model.property';
+import {Partner} from './Partner';
+import {Task} from './Task';
+import {ProducableType} from './ProducableType';
+import {DisseminationType} from './DisseminationType';
+import {Workpackage} from './Workpackage';
 
 export class Deliverable extends AutogeneratableModel {
   protected static _properties = [
@@ -30,26 +35,32 @@ export class Deliverable extends AutogeneratableModel {
     }),
     new ForeignKeyModelProperty({
       name: 'lead',
+      type: Partner,
       service: PartnerService
     }),
     new ForeignKeyModelProperty({
       name: 'maintask',
+      type: Task,
       service: TaskService
     }),
     new ForeignManyModelProperty({
       name: 'secondarytasks',
+      type: Task,
       service: TaskService
     }),
     new ForeignKeyModelProperty({
       name: 'type',
+      type: ProducableType,
       service: ProducabletypeService
     }),
     new ForeignKeyModelProperty({
       name: 'dissemination',
+      type: DisseminationType,
       service: DisseminationtypeService
     }),
     new ForeignKeyModelProperty({
       name: 'wp',
+      type: Workpackage,
       service: WorkpackageService
     })
   ];

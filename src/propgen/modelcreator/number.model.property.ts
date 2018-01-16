@@ -1,7 +1,6 @@
 import {ModelProperty} from './model.property';
 
 export class NumberModelProperty extends ModelProperty<number> {
-  public component: any;
   public maxDigits: number;
   public decimalPlaces: number;
   public minValue: number = null;

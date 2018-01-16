@@ -13,8 +13,10 @@ import {ForeignManyModelProperty} from '../foreign-many.model.property';
   '  </mat-select>\n' +
   '</mat-form-field>'
 })
-export class ForeignManyFormComponent implements ModelPropertyComponent {
-  constructor(private injector: Injector) {}
+export class ForeignManyFormComponent extends ModelPropertyComponent {
+  constructor(private injector: Injector) {
+    super();
+  }
   private _data: Array<number>;
   get data(): Array<number> {
     return this._data;
@@ -26,19 +28,26 @@ export class ForeignManyFormComponent implements ModelPropertyComponent {
     }
   }
   @Output() dataChange = new EventEmitter<Array<number>>();
-  private placeholder: string;
-  private helpText: string;
   private _propertyDescription: ForeignManyModelProperty;
   @Input() set propertyDescription(desc: ForeignManyModelProperty) {
     this._propertyDescription = desc;
     if(desc.verboseName) {
       this.placeholder = desc.verboseName;
     }
+    else if(desc.type && desc.type.verboseName) {
+      this.placeholder = desc.type.verboseName;
+    }
     else {
-      this.placeholder = desc.name.charAt(0).toUpperCase() + desc.name.slice(1);
+      this.updatePlaceholder(desc);
     }
     if(desc.helpText) {
       this.helpText = desc.helpText;
+    }
+    else if(desc.type && desc.type.helpText) {
+      this.helpText = desc.type.helpText;
+    }
+    else {
+      this.updateHelpText(desc);
     }
     const dataService = (<BackendService<any>>this.injector.get(desc.service));
     dataService.getAll().subscribe((data) => {

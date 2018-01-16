@@ -28,15 +28,18 @@ export class AutomaticModelFormListComponent {
       service.getAll().subscribe(
         (result) => {
           this.data = result;
-          this.sortableData = this.data.map((d) => {
-            return d.toListItem();
+          Promise.all(this.data.map((d) => {
+            return d.toListItem(injector);
+          })).then((data) => {
+            console.log(data);
+            this.sortableData = data;
           });
         },
         (error) => {
           console.error(error)
         }
       );
-    })
+    });
   }
   private data: AutogeneratableModel[];
   protected sortableData: SortableEntity[];
