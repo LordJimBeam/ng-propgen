@@ -5,7 +5,9 @@ import {SortableEntity} from './SortableEntity';
 export abstract class AutogeneratableModel implements RESTModelInterface {
   public id: number = 0;
   public abstract getProperties(): ModelProperty[];
-  public abstract toListItem(): SortableEntity;
+  public toListItem(): SortableEntity {
+    return new SortableEntity(this.id, this[this.getProperties()[0].name]);
+  };
 
   public constructor(data: Object = {}) {
     if('id' in data) {
