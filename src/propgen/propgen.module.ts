@@ -32,6 +32,7 @@ import {DeliverableService} from './services/deliverable.service';
 import {ForeignManyFormComponent} from './modelcreator/formcomponents/foreign-many.form.component';
 import {MilestoneService} from './services/milestone.service';
 import {DeliverablePartnerTaskPMService} from './services/deliverablepartnertaskpm.service';
+import {TaskPartnerPMService} from './services/taskpartnerpm.service';
 
 
 
@@ -106,6 +107,7 @@ function automaticModelRoute(path: string, title: string, service: any) : Routes
     PartnertypeService,
     ProducabletypeService,
     TaskService,
+    TaskPartnerPMService,
     TextblockService,
     WorkpackageService
   ],
@@ -118,13 +120,14 @@ function automaticModelRoute(path: string, title: string, service: any) : Routes
 export class PropgenModule {
   static routes: Routes = [].concat.apply([], [
     automaticModelRoute('deliverable', 'Deliverable', DeliverableService),
-    automaticModelRoute('deliverablepartnertaskpm', 'title', DeliverablePartnerTaskPMService),
+    automaticModelRoute('deliverablepartnertaskpm', 'DeliverablePartnerTaskPM', DeliverablePartnerTaskPMService),
     automaticModelRoute('disseminationtype', 'Dissemination type', DisseminationtypeService),
     automaticModelRoute('milestone', 'Milestone', MilestoneService),
     automaticModelRoute('partner', 'Partner', PartnerService),
     automaticModelRoute('partnertype', 'Partnertype', PartnertypeService),
     automaticModelRoute('producabletype', 'Producable type', ProducabletypeService),
     automaticModelRoute('task', 'Task', TaskService),
+    automaticModelRoute('taskpartnerpm', 'TaskPartnerPM', TaskPartnerPMService),
     automaticModelRoute('textblock', 'Textblock', TextblockService),
     automaticModelRoute('workpackage', 'Workpackage', WorkpackageService),
     [{
