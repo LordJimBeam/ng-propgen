@@ -34,6 +34,7 @@ import {MilestoneService} from './services/milestone.service';
 import {DeliverablePartnerTaskPMService} from './services/deliverablepartnertaskpm.service';
 import {TaskPartnerPMService} from './services/taskpartnerpm.service';
 import {MilestonePartnerTaskPMService} from './services/milestonepartnertaskpm.service';
+import {EmailFormComponent} from './modelcreator/formcomponents/email.form.component';
 
 
 
@@ -71,6 +72,7 @@ function automaticModelRoute(path: string, title: string, service: any) : Routes
     RootComponent,
     SortableListComponent,
 
+    EmailFormComponent,
     ForeignKeyFormComponent,
     ForeignManyFormComponent,
     NumberFormComponent,
