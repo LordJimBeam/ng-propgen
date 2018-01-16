@@ -51,7 +51,11 @@ export class ForeignManyFormComponent extends ModelPropertyComponent {
     }
     const dataService = (<BackendService<any>>this.injector.get(desc.service));
     dataService.getAll().subscribe((data) => {
-      this.entityList = data.map((x) => x.toListItem());
+      Promise.all(data.map((d) => {
+        return d.toListItem(this.injector);
+      })).then((data) => {
+        this.entityList = data;
+      });
     });
   };
   public setPropertyDescription(desc: ModelProperty) {
