@@ -7,6 +7,7 @@ import {RESTListResponse} from '../model/RESTListResponse';
 import {hasOwnProperty} from 'tslint/lib/utils';
 
 const baseUrl = 'http://localhost:8000';
+const secondsToCacheInvalidation = 60;
 
 export abstract class BackendService<T extends RESTModelInterface> {
   constructor(protected http: HttpClient) {
@@ -74,7 +75,7 @@ export abstract class BackendService<T extends RESTModelInterface> {
     if (!this.cacheValid && !this._inProgress) {
       this._inProgress = true;
       this.internalRetrieveAllItems().subscribe(data => {
-        this.cacheValidUntil = Date.now() + (1000 * 600);
+        this.cacheValidUntil = Date.now() + (1000 * secondsToCacheInvalidation);
         this._inProgress = false;
         this.cachedItems = data.object_list.map(d => this.ensureConstructor(d));
       }, (error) => {
