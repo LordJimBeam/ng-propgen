@@ -33,6 +33,7 @@ import {ForeignManyFormComponent} from './modelcreator/formcomponents/foreign-ma
 import {MilestoneService} from './services/milestone.service';
 import {DeliverablePartnerTaskPMService} from './services/deliverablepartnertaskpm.service';
 import {TaskPartnerPMService} from './services/taskpartnerpm.service';
+import {MilestonePartnerTaskPMService} from './services/milestonepartnertaskpm.service';
 
 
 
@@ -103,6 +104,7 @@ function automaticModelRoute(path: string, title: string, service: any) : Routes
     DeliverablePartnerTaskPMService,
     DisseminationtypeService,
     MilestoneService,
+    MilestonePartnerTaskPMService,
     PartnerService,
     PartnertypeService,
     ProducabletypeService,
@@ -123,6 +125,7 @@ export class PropgenModule {
     automaticModelRoute('deliverablepartnertaskpm', 'DeliverablePartnerTaskPM', DeliverablePartnerTaskPMService),
     automaticModelRoute('disseminationtype', 'Dissemination type', DisseminationtypeService),
     automaticModelRoute('milestone', 'Milestone', MilestoneService),
+    automaticModelRoute('milestonepartnertaskpm', 'MilestonePartnerTaskPM', MilestonePartnerTaskPMService),
     automaticModelRoute('partner', 'Partner', PartnerService),
     automaticModelRoute('partnertype', 'Partnertype', PartnertypeService),
     automaticModelRoute('producabletype', 'Producable type', ProducabletypeService),
