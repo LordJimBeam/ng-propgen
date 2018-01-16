@@ -28,6 +28,7 @@ import {TaskService} from './services/task.service';
 import {ProducabletypeService} from './services/producabletype.service';
 import {TextFormComponent} from './modelcreator/formcomponents/text.form.component';
 import {DisseminationtypeService} from './services/disseminationtype.service';
+import {ForeignManyFormComponent} from './modelcreator/formcomponents/foreign-many.form.component';
 
 
 
@@ -66,6 +67,7 @@ function automaticModelRoute(path: string, title: string, service: any) : Routes
     SortableListComponent,
 
     ForeignKeyFormComponent,
+    ForeignManyFormComponent,
     NumberFormComponent,
     MarkdownPreviewComponent,
     StringFormComponent,

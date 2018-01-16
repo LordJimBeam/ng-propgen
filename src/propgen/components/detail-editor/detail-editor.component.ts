@@ -11,10 +11,12 @@ import {NumberFormComponent} from '../../modelcreator/formcomponents/number.form
 import {ForeignKeyFormComponent} from '../../modelcreator/formcomponents/foreign.form.component';
 import {AutogeneratableModel} from '../../model/AutogeneratableModel';
 import {TextFormComponent} from '../../modelcreator/formcomponents/text.form.component';
+import {ForeignManyFormComponent} from '../../modelcreator/formcomponents/foreign-many.form.component';
 
 
 const typeToComponentMap = new Object({
   ForeignKeyModelProperty: ForeignKeyFormComponent,
+  ForeignManyModelProperty: ForeignManyFormComponent,
   NumberModelProperty: NumberFormComponent,
   MarkdownModelProperty: MarkdownPreviewComponent,
   StringModelProperty: StringFormComponent,
