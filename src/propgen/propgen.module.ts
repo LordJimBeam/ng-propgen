@@ -25,7 +25,9 @@ import {AutomaticModelFormComponent} from './components/automatic-model-form/aut
 import {AutomaticModelFormListComponent} from './components/automatic-model-form-list/automatic-model-form-list.component';
 import {TextblockService} from './services/textblock.service';
 import {TaskService} from './services/task.service';
+import {ProducabletypeService} from './services/producabletype.service';
 import {TextFormComponent} from './modelcreator/formcomponents/text.form.component';
+import {DisseminationtypeService} from './services/disseminationtype.service';
 
 
 
@@ -91,8 +93,10 @@ function automaticModelRoute(path: string, title: string, service: any) : Routes
     MatToolbarModule
   ],
   providers: [
+    DisseminationtypeService,
     PartnerService,
     PartnertypeService,
+    ProducabletypeService,
     TaskService,
     TextblockService,
     WorkpackageService
@@ -105,8 +109,10 @@ function automaticModelRoute(path: string, title: string, service: any) : Routes
 })
 export class PropgenModule {
   static routes: Routes = [].concat.apply([], [
+    automaticModelRoute('disseminationtype', 'Dissemination type', DisseminationtypeService),
     automaticModelRoute('partner', 'Partner', PartnerService),
     automaticModelRoute('partnertype', 'Partnertype', PartnertypeService),
+    automaticModelRoute('producabletype', 'Producable type', ProducabletypeService),
     automaticModelRoute('task', 'Task', TaskService),
     automaticModelRoute('textblock', 'Textblock', TextblockService),
     automaticModelRoute('workpackage', 'Workpackage', WorkpackageService),

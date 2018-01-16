@@ -4,7 +4,7 @@ import {SortableEntity} from './SortableEntity';
 import {StringModelProperty} from '../modelcreator/string.model.property';
 import {TextModelProperty} from '../modelcreator/text.model.property';
 
-export class ProducableType extends AutogeneratableModel {
+export class DisseminationType extends AutogeneratableModel {
   protected static _properties: ModelProperty[] = [
     new StringModelProperty({
       name: 'short',
@@ -12,14 +12,14 @@ export class ProducableType extends AutogeneratableModel {
     }),
     new StringModelProperty({
       name: 'long',
-      maxLength: 100
+      maxLength: 200
     }),
     new TextModelProperty({
       name: 'comments'
     })
   ];
   getProperties(): ModelProperty[] {
-    return ProducableType._properties;
+    return DisseminationType._properties;
   }
 
   toListItem(): SortableEntity {
