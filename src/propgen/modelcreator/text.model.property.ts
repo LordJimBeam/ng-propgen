@@ -6,8 +6,4 @@ export class TextModelProperty extends ModelProperty<string> {
     Object.assign(this, init);
   }
 
-  isValid(value: string): boolean {
-    return true;
-  }
-
 }

@@ -1,6 +1,6 @@
 import {Component, EventEmitter, Injector, Input, Output} from '@angular/core';
 import {StringModelProperty} from '../string.model.property';
-import {ModelPropertyComponent} from './model.form.component';
+import {ModelFormComponent} from './model.form.component';
 import {ModelProperty} from '../model.property';
 import {NumberModelProperty} from '../number.model.property';
 import {ForeignKeyModelProperty} from '../foreign.model.property';
@@ -10,15 +10,18 @@ import {SortableEntity} from '../../model/SortableEntity';
 @Component({
   selector: 'propgen-foreign-key-form-input',
   template: '<mat-form-field hintLabel="{{helpText}}">\n' +
-  '  <mat-select [(ngModel)]="data" placeholder="{{placeholder}}">' +
+  '  <mat-select [formControl]="formControl" placeholder="{{placeholder}}">' +
   '    <mat-option [value]="0">-</mat-option>' +
   '    <mat-option *ngFor="let e of entityList" [value]="e.id">{{ e.title }}</mat-option>' +
   '  </mat-select>\n' +
   '</mat-form-field>'
 })
-export class ForeignKeyFormComponent extends ModelPropertyComponent {
+export class ForeignKeyFormComponent extends ModelFormComponent {
   constructor(private injector: Injector) {
     super();
+    this.formControl.valueChanges.subscribe((value) => {
+      this.data = value;
+    });
   }
   private _data: number;
   get data(): number {
@@ -28,12 +31,22 @@ export class ForeignKeyFormComponent extends ModelPropertyComponent {
     if(d !== this._data) {
       this._data = d;
       this.dataChange.emit(d);
+      this.formControl.setValue(d);
     }
   }
   @Output() dataChange = new EventEmitter<number>();
   private _propertyDescription: ForeignKeyModelProperty;
   @Input() set propertyDescription(desc: ForeignKeyModelProperty) {
     this._propertyDescription = desc;
+    const dataService = (<BackendService<any>>this.injector.get(desc.service));
+    dataService.getAll().subscribe((data) => {
+      Promise.all(data.map((d) => {
+        return d.toListItem(this.injector);
+      })).then((data) => {
+        this.entityList = data;
+      });
+    });
+
     if(desc.verboseName) {
       this.placeholder = desc.verboseName;
     }
@@ -52,21 +65,10 @@ export class ForeignKeyFormComponent extends ModelPropertyComponent {
     else {
       this.updateHelpText(desc);
     }
-    const dataService = (<BackendService<any>>this.injector.get(desc.service));
-    dataService.getAll().subscribe((data) => {
-      Promise.all(data.map((d) => {
-        return d.toListItem(this.injector);
-      })).then((data) => {
-        this.entityList = data;
-      });
-    });
+    this.formControl.setValidators(desc.getValidators());
   };
   public setPropertyDescription(desc: ModelProperty) {
     this.propertyDescription = (<ForeignKeyModelProperty>desc);
-  }
-
-  public isValid(): boolean {
-    return this._propertyDescription.isValid(this._data);
   }
 
   protected entityList: SortableEntity[];

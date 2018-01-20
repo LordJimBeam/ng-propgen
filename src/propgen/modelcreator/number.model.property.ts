@@ -1,4 +1,5 @@
 import {ModelProperty} from './model.property';
+import {Validators} from '@angular/forms';
 
 export class NumberModelProperty extends ModelProperty<number> {
   public maxDigits: number;
@@ -10,17 +11,21 @@ export class NumberModelProperty extends ModelProperty<number> {
     Object.assign(this, init);
   }
 
-  public isValid(value: number) {
-    if(this.maxDigits > 0 && value >= Math.pow(10, this.maxDigits + 1)) {
-      return false;
+  public getValidators() {
+    let base = super.getValidators();
+    if(this.minValue !== null) {
+      base.push(Validators.min(this.minValue));
     }
-    if(this.minValue !== null && this.minValue > value) {
-      return false;
+    else if(this.maxDigits > 0) {
+      base.push(Validators.min(-(Math.pow(10, this.maxDigits - 1) + 1)));
     }
-    if(this.maxValue !== null && this.maxValue < value) {
-      return false;
+    if(this.maxValue !== null) {
+      base.push(Validators.max(this.maxValue));
     }
-    // TODO maybe factor decimal places into validity as well
-    return true;
+    else if(this.maxDigits > 0) {
+      base.push(Validators.max((Math.pow(10, this.maxDigits - 1) + 1)));
+    }
+    return base;
   }
+
 }

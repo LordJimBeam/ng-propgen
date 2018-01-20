@@ -5,8 +5,4 @@ export class BooleanModelProperty extends ModelProperty<boolean> {
     super();
     Object.assign(this, init);
   }
-  isValid(value: boolean): boolean {
-    return true;
-  }
-
 }

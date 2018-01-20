@@ -7,7 +7,4 @@ export class MarkdownModelProperty extends ModelProperty<string> {
     Object.assign(this, init);
   }
 
-  public isValid(value: string): boolean {
-    return true;
-  }
 }

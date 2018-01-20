@@ -3,10 +3,10 @@ import {
   Component, ComponentFactoryResolver, EventEmitter, forwardRef, Input, Output, ViewChild,
   ViewContainerRef
 } from '@angular/core';
-import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
+import {ControlValueAccessor, FormGroup, NG_VALUE_ACCESSOR} from '@angular/forms';
 import {MarkdownPreviewComponent} from '../../modelcreator/formcomponents/markdown-preview/markdown-preview.component';
 import {StringFormComponent} from '../../modelcreator/formcomponents/string.form.component';
-import {ModelPropertyComponent} from '../../modelcreator/formcomponents/model.form.component';
+import {ModelFormComponent} from '../../modelcreator/formcomponents/model.form.component';
 import {NumberFormComponent} from '../../modelcreator/formcomponents/number.form.component';
 import {ForeignKeyFormComponent} from '../../modelcreator/formcomponents/foreign.form.component';
 import {AutogeneratableModel} from '../../model/AutogeneratableModel';
@@ -47,6 +47,8 @@ export class DetailEditorComponent implements ControlValueAccessor, AfterViewIni
   @Output() onCancel = new EventEmitter();
   @ViewChild('propertyContainer', { read: ViewContainerRef }) propertyContainer: ViewContainerRef;
 
+  protected formGroup: FormGroup = new FormGroup({});
+
   protected onSaveClick() {
     this.onSave.emit();
   }
@@ -76,7 +78,9 @@ export class DetailEditorComponent implements ControlValueAccessor, AfterViewIni
 
   private createChildren() {
     if(this.viewInitialized && this._data) {
-
+      for(let c in this.formGroup.controls) {
+        this.formGroup.removeControl(c);
+      }
       this.propertyContainer.clear();
 
       // we need to resolve the factory for each component only once, so store them in here
@@ -98,13 +102,12 @@ export class DetailEditorComponent implements ControlValueAccessor, AfterViewIni
         }
         let factory = factories[prop.component];
         let componentRef = this.propertyContainer.createComponent(factory);
-        let instance = (<ModelPropertyComponent>componentRef.instance);
+        let instance = (<ModelFormComponent>componentRef.instance);
         instance.data = this._data[prop.name];
         instance.dataChange.subscribe((d) => this.data[prop.name] = d);
         instance.setPropertyDescription(prop);
+        this.formGroup.addControl(prop.name, instance.formControl);
       }
-
-
     }
   }
 

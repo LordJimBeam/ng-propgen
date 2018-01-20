@@ -1,5 +1,6 @@
 import {ModelProperty} from './model.property';
 import {StringFormComponent} from './formcomponents/string.form.component';
+import {Validators} from '@angular/forms';
 
 export class StringModelProperty extends ModelProperty<string> {
   public minLength: number;
@@ -9,14 +10,15 @@ export class StringModelProperty extends ModelProperty<string> {
     Object.assign(this, init);
   }
 
-  public isValid(value: string): boolean {
-    if(value.length < this.minLength) {
-      return false;
+  public getValidators() {
+    let base = super.getValidators();
+    if(this.minLength > 0) {
+      base.push(Validators.minLength(this.minLength));
     }
-    if(this.maxLength > 0 && value.length > this.maxLength) {
-      return false;
+    if(this.maxLength > 0) {
+      base.push(Validators.maxLength(this.maxLength));
     }
-    return true;
+    return base;
   }
 
 }

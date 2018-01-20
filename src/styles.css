@@ -8,3 +8,10 @@
 .form-container > * > * {
   width: 100%;
 }
+
+.form-container > * {
+  margin-bottom: 1.25em;
+}
+.form-container > button {
+  margin-top: 0.5em;
+}

@@ -8,8 +8,4 @@ export class ForeignKeyModelProperty extends ModelProperty<number> {
     Object.assign(this, init);
   }
 
-  isValid(value: number): boolean {
-    return value > 0;
-  }
-
 }

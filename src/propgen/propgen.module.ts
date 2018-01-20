@@ -11,7 +11,7 @@ import {RouterModule, Routes} from '@angular/router';
 import {RootComponent} from './components/root/root.component';
 import {SortableListComponent} from './components/sortable-list/sortable-list.component';
 import {WorkpackageService} from './services/workpackage.service';
-import {FormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {HttpClientModule} from '@angular/common/http';
 import {SortablejsModule} from 'angular-sortablejs';
 import {MarkdownModule} from 'ngx-md';
@@ -88,6 +88,7 @@ function automaticModelRoute(path: string, title: string, service: any) : Routes
   imports: [
     BrowserModule,
     FormsModule,
+    ReactiveFormsModule,
     HttpClientModule,
     RouterModule,
 
