@@ -5,7 +5,17 @@ import {BooleanModelProperty} from '../boolean.model.property';
 
 @Component({
   selector: 'propgen-boolean-form-input',
-  template: '<mat-checkbox [formControl]="formControl">{{placeholder}}</mat-checkbox>'
+  template: '<mat-slide-toggle [formControl]="formControl">{{placeholder}}</mat-slide-toggle>' +
+  '<div class="mat-form-field mat-form-field-should-float mat-form-field-can-float">' +
+  '  <div class="mat-input-wrapper mat-form-field-wrapper">' +
+  '    <div class="mat-input-subscript-wrapper mat-form-field-subscript-wrapper">' +
+  '      <div class="mat-input-hint-wrapper mat-form-field-hint-wrapper">' +
+  '        <div class="mat-hint">{{helpText}}</div>' +
+  '        <div class="mat-input-hint-spacer mat-form-field-hint-spacer"></div>' +
+  '      </div>' +
+  '    </div>' +
+  '  </div>' +
+  '</div>'
 })
 export class BooleanFormComponent extends ModelFormComponent {
   constructor() {
@@ -30,14 +40,10 @@ export class BooleanFormComponent extends ModelFormComponent {
   @Input() set propertyDescription(desc: BooleanModelProperty) {
     this._propertyDescription = desc;
     this.updatePlaceholder(desc);
+    this.updateHelpText(desc);
     this.formControl.setValidators(desc.getValidators());
   };
   public setPropertyDescription(desc: ModelProperty) {
     this.propertyDescription = (<BooleanModelProperty>desc);
   }
-
-  public isValid(): boolean {
-    return true;
-  }
-
 }

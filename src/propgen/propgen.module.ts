@@ -4,7 +4,7 @@ import {MenuComponent} from './components/menu/menu.component';
 import {
   MatButtonModule, MatCardModule, MatCheckboxModule, MatExpansionModule, MatFormFieldModule, MatIconModule, MatInputModule, MatListModule,
   MatMenuModule,
-  MatProgressSpinnerModule, MatSelectModule,
+  MatProgressSpinnerModule, MatSelectModule, MatSlideToggleModule,
   MatToolbarModule
 } from '@angular/material';
 import {RouterModule, Routes} from '@angular/router';
@@ -97,7 +97,6 @@ function automaticModelRoute(path: string, title: string, service: any) : Routes
 
     MatButtonModule,
     MatCardModule,
-    MatCheckboxModule,
     MatExpansionModule,
     MatFormFieldModule,
     MatIconModule,
@@ -106,6 +105,7 @@ function automaticModelRoute(path: string, title: string, service: any) : Routes
     MatMenuModule,
     MatProgressSpinnerModule,
     MatSelectModule,
+    MatSlideToggleModule,
     MatToolbarModule
   ],
   providers: [
