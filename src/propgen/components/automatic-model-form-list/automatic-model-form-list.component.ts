@@ -3,15 +3,18 @@ import {SortableEntity} from '../../model/SortableEntity';
 import {ActivatedRoute, Router} from '@angular/router';
 import {AutogeneratableModel} from '../../model/AutogeneratableModel';
 import {BackendService} from '../../services/backend.service';
+import {VersionedBackendService} from '../../services/versioned-backend.service';
 
 @Component({
   selector: 'propgen-automatic-model-form-list',
   template: '<propgen-sortable-list\n' +
   '  (onCreateEntity)="add()"\n' +
   '  (onEditEntity)="edit($event)"\n' +
+  '  (onVersionEntity)="routeToVersion($event)"\n' +
   '  [title]="title"\n' +
   '  (onReorder)="onReorder($event)"\n' +
-  '  [entities]="sortableData">\n' +
+  '  [entities]="sortableData"\n' +
+  '  [hasVersioning]="hasVersioning">\n' +
   '</propgen-sortable-list>'
 })
 export class AutomaticModelFormListComponent {
@@ -25,6 +28,7 @@ export class AutomaticModelFormListComponent {
       this.path = data.path;
       this.title = data.title;
       let service = injector.get<BackendService<any>>(data.service);
+      this.hasVersioning = (service instanceof VersionedBackendService);
       service.getAll().subscribe(
         (result) => {
           this.data = result;
@@ -45,6 +49,7 @@ export class AutomaticModelFormListComponent {
   protected sortableData: SortableEntity[];
   protected title: string;
   protected path: string;
+  protected hasVersioning: boolean = false;
 
   protected add(): void {
     this.router.navigate([this.path, 'add']);
@@ -55,5 +60,7 @@ export class AutomaticModelFormListComponent {
   protected onReorder($event): void {
 
   }
-
+  protected routeToVersion($event) {
+    this.router.navigate([this.path, $event.id, 'versions']);
+  }
 }

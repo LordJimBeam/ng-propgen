@@ -8,9 +8,11 @@ import {SortableEntity} from '../../model/SortableEntity';
 export class SortableListComponent {
   @Input() title: string;
   @Input() entities: SortableEntity[];
+  @Input() hasVersioning: boolean = false;
   @Output() onCreateEntity = new EventEmitter();
   @Output() onEditEntity = new EventEmitter<SortableEntity>();
   @Output() onReorder = new EventEmitter<SortableEntity[]>();
+  @Output() onVersionEntity = new EventEmitter<SortableEntity>();
 
   protected sortableOptions = {
     // see https://github.com/RubaXa/Sortable#options
@@ -28,6 +30,10 @@ export class SortableListComponent {
 
   protected onDropSuccessful($event) {
     this.onReorder.emit(this.entities);
+  }
+
+  protected onVersionButtonClick(entity: SortableEntity) {
+    this.onVersionEntity.emit(entity);
   }
 
 }

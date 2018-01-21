@@ -2,8 +2,6 @@ import {HttpClient} from '@angular/common/http';
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 import {Observable} from 'rxjs/Observable';
 import {RESTModelInterface} from '../model/RESTModelInterface';
-import {RESTSingleResponse} from '../model/RESTSingleResponse';
-import {RESTListResponse} from '../model/RESTListResponse';
 import {hasOwnProperty} from 'tslint/lib/utils';
 
 const baseUrl = 'http://localhost:8000';

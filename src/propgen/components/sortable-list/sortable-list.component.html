@@ -8,6 +8,7 @@
       <span class="sort-handle"><mat-icon>swap_vert</mat-icon></span>
       {{e.title}}
     </h3>
+    <button *ngIf="hasVersioning === true" mat-icon-button (click)="onVersionButtonClick(e)"><mat-icon mat-list-icon>change_history</mat-icon></button>
     <button mat-icon-button (click)="onEditButtonClick(e)"><mat-icon mat-list-icon>mode_edit</mat-icon></button>
   </mat-list-item>
 </mat-list>

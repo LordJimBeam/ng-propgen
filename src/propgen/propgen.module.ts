@@ -2,12 +2,12 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import {MenuComponent} from './components/menu/menu.component';
 import {
-  MatButtonModule, MatCardModule, MatCheckboxModule, MatExpansionModule, MatFormFieldModule, MatIconModule, MatInputModule, MatListModule,
-  MatMenuModule,
+  MatButtonModule, MatFormFieldModule, MatIconModule, MatInputModule, MatListModule,
+  MatMenuModule, MatPaginatorModule,
   MatProgressSpinnerModule, MatSelectModule, MatSlideToggleModule, MatSnackBarModule, MatTabsModule,
   MatToolbarModule
 } from '@angular/material';
-import {RouterModule, Routes} from '@angular/router';
+import {RouterModule, Routes, Route} from '@angular/router';
 import {RootComponent} from './components/root/root.component';
 import {SortableListComponent} from './components/sortable-list/sortable-list.component';
 import {WorkpackageService} from './services/workpackage.service';
@@ -40,11 +40,13 @@ import {ProjectService} from './services/project.service';
 import {SettingService} from './services/setting.service';
 import {BooleanFormComponent} from './modelcreator/formcomponents/boolean.form.component';
 import {TemplateService} from './services/template.service';
+import {VersionedBackendService} from './services/versioned-backend.service';
+import {AutomaticModelFormVersionListComponent} from './components/automatic-model-form-version-list/automatic-model-form-version-list.component';
+import {AutomaticModelFormVersionComponent} from './components/automatic-model-form-version/automatic-model-form-version.component';
 
 
 function automaticModelRoute(path: string, title: string, service: any) : Routes {
-  return [
-    {
+  let basicRoutes: Routes = [{
       path: path + '/:id',
       component: AutomaticModelFormComponent,
       data: {
@@ -63,6 +65,28 @@ function automaticModelRoute(path: string, title: string, service: any) : Routes
       }
     }
   ];
+  let mock = new service();
+  if(mock instanceof VersionedBackendService) {
+    basicRoutes.unshift({
+      path: path + '/:id/versions',
+      component: AutomaticModelFormVersionListComponent,
+      data: {
+        title: title,
+        service: service
+      }
+    });
+    basicRoutes.unshift({
+      path: path + '/:id/version/:version_id',
+      component: AutomaticModelFormVersionComponent,
+      data: {
+        title: title,
+        service: service
+      }
+    });
+    console.log(basicRoutes);
+    return basicRoutes;
+  }
+  return basicRoutes;
 }
 
 
@@ -71,6 +95,8 @@ function automaticModelRoute(path: string, title: string, service: any) : Routes
   declarations: [
     AutomaticModelFormComponent,
     AutomaticModelFormListComponent,
+    AutomaticModelFormVersionComponent,
+    AutomaticModelFormVersionListComponent,
     DetailEditorComponent,
     MenuComponent,
     RootComponent,
@@ -101,6 +127,7 @@ function automaticModelRoute(path: string, title: string, service: any) : Routes
     MatInputModule,
     MatListModule,
     MatMenuModule,
+    MatPaginatorModule,
     MatProgressSpinnerModule,
     MatSelectModule,
     MatSlideToggleModule,

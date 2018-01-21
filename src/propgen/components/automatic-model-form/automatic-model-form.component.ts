@@ -3,6 +3,7 @@ import {Router, ActivatedRoute} from '@angular/router';
 import {BackendService} from '../../services/backend.service';
 import {MatSnackBar, MatSnackBarRef, SimpleSnackBar} from '@angular/material';
 import {HttpErrorResponse} from '@angular/common/http';
+import {RESTModelInterface} from '../../model/RESTModelInterface';
 
 @Component({
   selector: 'propgen-automatic-model-form',
@@ -69,7 +70,7 @@ export class AutomaticModelFormComponent implements OnDestroy {
   }
   protected ready = false;
   protected service: BackendService<any>;
-  protected data: AutomaticModelFormComponent;
+  protected data: RESTModelInterface;
   protected listPath: string;
   protected title: string;
   protected snackBarRef: MatSnackBarRef<SimpleSnackBar>;

@@ -41,6 +41,7 @@ export class DetailEditorComponent implements ControlValueAccessor, AfterViewIni
   constructor(private resolver: ComponentFactoryResolver) {
 
   }
+  @Input() readonly: boolean = false;
   @Input() title: string;
   @Input() enabled: boolean;
   @Output() onSave = new EventEmitter();
