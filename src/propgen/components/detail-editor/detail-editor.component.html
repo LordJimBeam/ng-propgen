@@ -1,5 +1,5 @@
 <h1 class="mat-headline">Adding or editing {{title}}</h1>
-<mat-spinner *ngIf="!enabled"></mat-spinner>
+<mat-spinner style="margin: auto" *ngIf="!enabled"></mat-spinner>
 <div class="form-container">
   <form [formGroup]="formGroup" #propertyContainer></form>
   <button [disabled]="!enabled || formGroup.invalid" mat-button class="mat-primary" (click)="onSaveClick()">Save</button>

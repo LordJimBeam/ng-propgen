@@ -92,8 +92,7 @@ export class DetailEditorComponent implements ControlValueAccessor, AfterViewIni
             prop.component = typeToComponentMap[prop.constructor.name];
           }
           else {
-            console.log(prop);
-            console.log(prop.name + ' (' + prop.constructor.name + ') has no attached component, skipping');
+            console.warn(prop.name + ' (' + prop.constructor.name + ') has no attached component, skipping');
             continue;
           }
         }
