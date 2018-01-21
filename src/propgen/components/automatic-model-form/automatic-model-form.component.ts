@@ -1,6 +1,7 @@
 import {Component, Injector} from '@angular/core';
 import {Router, ActivatedRoute} from '@angular/router';
 import {BackendService} from '../../services/backend.service';
+import {MatSnackBar} from '@angular/material';
 
 @Component({
   selector: 'propgen-automatic-model-form',
@@ -16,6 +17,7 @@ export class AutomaticModelFormComponent {
 
   constructor(
     protected router: Router,
+    protected snackBar: MatSnackBar,
     route: ActivatedRoute,
     injector: Injector
   ) {
@@ -30,6 +32,11 @@ export class AutomaticModelFormComponent {
           this.service.get(id).then((result) => {
             this.data = result;
             this.ready = true;
+          }).catch((error) => {
+            console.error(error);
+            this.snackBar.open('Could not get data from server. Your data might be outdated.', 'Dismiss', {
+              verticalPosition: "top"
+            });
           });
         }
         else {
@@ -50,6 +57,9 @@ export class AutomaticModelFormComponent {
       .then(() => this.routeToList())
       .catch((error) => {
         console.error(error);
+        this.snackBar.open('Could not save changes. See error log for details.', 'Dismiss', {
+          verticalPosition: "top"
+        });
       });
   }
   protected onCancel() {
