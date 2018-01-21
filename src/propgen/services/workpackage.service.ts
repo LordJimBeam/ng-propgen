@@ -1,10 +1,10 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Workpackage} from '../model/Workpackage';
-import {BackendService} from './backend.service';
+import {VersionedBackendService} from './versioned-backend.service';
 
 @Injectable()
-export class WorkpackageService extends BackendService<Workpackage> {
+export class WorkpackageService extends VersionedBackendService<Workpackage> {
   protected getEndpoint(): string {
     return '/Workpackage';
   }

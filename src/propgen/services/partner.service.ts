@@ -1,11 +1,10 @@
 import {Injectable} from '@angular/core';
-import {BackendService} from './backend.service';
-import {PartnerType} from '../model/PartnerType';
 import {HttpClient} from '@angular/common/http';
 import {Partner} from '../model/Partner';
+import {VersionedBackendService} from './versioned-backend.service';
 
 @Injectable()
-export class PartnerService extends BackendService<Partner> {
+export class PartnerService extends VersionedBackendService<Partner> {
   constructor(protected http: HttpClient) {
     super(http);
   }

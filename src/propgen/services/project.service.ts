@@ -1,10 +1,10 @@
-import {BackendService} from './backend.service';
 import {Project} from '../model/Project';
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
+import {VersionedBackendService} from './versioned-backend.service';
 
 @Injectable()
-export class ProjectService extends BackendService<Project> {
+export class ProjectService extends VersionedBackendService<Project> {
   protected getEndpoint(): string {
     return '/Project';
   }

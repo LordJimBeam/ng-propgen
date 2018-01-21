@@ -1,10 +1,10 @@
 import {Injectable} from '@angular/core';
-import {BackendService} from './backend.service';
 import {Setting} from '../model/Setting';
 import {HttpClient} from '@angular/common/http';
+import {VersionedBackendService} from './versioned-backend.service';
 
 @Injectable()
-export class SettingService extends BackendService<Setting> {
+export class SettingService extends VersionedBackendService<Setting> {
   protected getEndpoint(): string {
     return '/Setting';
   }

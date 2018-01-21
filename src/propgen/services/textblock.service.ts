@@ -1,10 +1,10 @@
-import {BackendService} from './backend.service';
 import {Textblock} from '../model/Textblock';
 import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
+import {VersionedBackendService} from './versioned-backend.service';
 
 @Injectable()
-export class TextblockService extends BackendService<Textblock> {
+export class TextblockService extends VersionedBackendService<Textblock> {
   protected getEndpoint(): string {
     return '/Textblock';
   }

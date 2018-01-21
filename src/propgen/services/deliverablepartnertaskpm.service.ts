@@ -1,10 +1,10 @@
 import {Injectable} from '@angular/core';
-import {BackendService} from './backend.service';
 import {DeliverablePartnerTaskPM} from '../model/DeliverablePartnerTaskPM';
 import {HttpClient} from '@angular/common/http';
+import {VersionedBackendService} from './versioned-backend.service';
 
 @Injectable()
-export class DeliverablePartnerTaskPMService extends BackendService<DeliverablePartnerTaskPM> {
+export class DeliverablePartnerTaskPMService extends VersionedBackendService<DeliverablePartnerTaskPM> {
   protected getEndpoint(): string {
     return '/DeliverablePartnerTaskPM';
   }
