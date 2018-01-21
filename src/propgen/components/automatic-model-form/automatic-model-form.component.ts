@@ -1,7 +1,8 @@
-import {Component, Injector} from '@angular/core';
+import {Component, Injector, OnDestroy} from '@angular/core';
 import {Router, ActivatedRoute} from '@angular/router';
 import {BackendService} from '../../services/backend.service';
-import {MatSnackBar} from '@angular/material';
+import {MatSnackBar, MatSnackBarRef, SimpleSnackBar} from '@angular/material';
+import {HttpErrorResponse} from '@angular/common/http';
 
 @Component({
   selector: 'propgen-automatic-model-form',
@@ -13,7 +14,7 @@ import {MatSnackBar} from '@angular/material';
   '    [(ngModel)]="data">\n' +
   '    </propgen-detail-editor>'
 })
-export class AutomaticModelFormComponent {
+export class AutomaticModelFormComponent implements OnDestroy {
 
   constructor(
     protected router: Router,
@@ -34,9 +35,28 @@ export class AutomaticModelFormComponent {
             this.ready = true;
           }).catch((error) => {
             console.error(error);
-            this.snackBar.open('Could not get data from server. Your data might be outdated.', 'Dismiss', {
-              verticalPosition: "top"
-            });
+            if(error instanceof HttpErrorResponse && error.status === 404) {
+              // Django returns a 500 status code if the ID does not exist, but this is the future proof way
+              this.snackBarRef = this.snackBar.open('The ID you requested does not exist in the database.', 'Back to overview', {
+                verticalPosition: "top"
+              });
+              this.snackBarRef.onAction().subscribe(() => {
+                this.routeToList();
+              })
+            }
+            else {
+              let message = 'Could not get data from server.';
+              if(this.data) {
+                // already have some from the cache
+                message += ' Your data might be outdated.';
+              }
+              this.snackBarRef = this.snackBar.open(message, 'Reload page', {
+                verticalPosition: "top"
+              });
+              this.snackBarRef.onAction().subscribe(() => {
+                window.location.reload();
+              });
+            }
           });
         }
         else {
@@ -52,12 +72,18 @@ export class AutomaticModelFormComponent {
   protected data: AutomaticModelFormComponent;
   protected listPath: string;
   protected title: string;
+  protected snackBarRef: MatSnackBarRef<SimpleSnackBar>;
+  ngOnDestroy(): void {
+    if(this.snackBarRef) {
+      this.snackBarRef.dismiss();
+    }
+  }
   protected onSave() {
     this.service.save(this.data)
       .then(() => this.routeToList())
       .catch((error) => {
         console.error(error);
-        this.snackBar.open('Could not save changes. See error log for details.', 'Dismiss', {
+        this.snackBarRef = this.snackBar.open('Could not save changes. See error log for details.', 'Dismiss', {
           verticalPosition: "top"
         });
       });
