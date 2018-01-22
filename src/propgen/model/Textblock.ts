@@ -2,9 +2,9 @@ import {ModelProperty} from '../modelcreator/model.property';
 import {StringModelProperty} from '../modelcreator/string.model.property';
 import {MarkdownModelProperty} from '../modelcreator/markdown.model.property';
 import {SortableEntity} from './SortableEntity';
-import {AutogeneratableModel} from './AutogeneratableModel';
+import {AutogeneratableOrderableModel} from './AutogeneratableOrderableModel';
 
-export class Textblock extends AutogeneratableModel {
+export class Textblock extends AutogeneratableOrderableModel {
   protected static _properties: ModelProperty[] = [
     new StringModelProperty({
       name: 'name',

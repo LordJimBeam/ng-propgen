@@ -6,8 +6,10 @@ import {Partner} from './Partner';
 import {PartnerService} from '../services/partner.service';
 import {SortableEntity} from './SortableEntity';
 import {AutogeneratableModel} from './AutogeneratableModel';
+import {NumberModelProperty} from '../modelcreator/number.model.property';
+import {AutogeneratableOrderableModel} from './AutogeneratableOrderableModel';
 
-export class Workpackage extends AutogeneratableModel {
+export class Workpackage extends AutogeneratableOrderableModel {
   protected static _properties: ModelProperty[] = [
     new StringModelProperty({
       name: 'title',

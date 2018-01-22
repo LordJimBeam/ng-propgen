@@ -6,9 +6,9 @@ import {PartnertypeService} from '../services/partnertype.service';
 import {MarkdownModelProperty} from '../modelcreator/markdown.model.property';
 import {NumberModelProperty} from '../modelcreator/number.model.property';
 import {SortableEntity} from './SortableEntity';
-import {AutogeneratableModel} from './AutogeneratableModel';
+import {AutogeneratableOrderableModel} from './AutogeneratableOrderableModel';
 
-export class Partner extends AutogeneratableModel {
+export class Partner extends AutogeneratableOrderableModel {
   protected static _properties: ModelProperty[] = [
     new StringModelProperty({
       name: 'partnername',

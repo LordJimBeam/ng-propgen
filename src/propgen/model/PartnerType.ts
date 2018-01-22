@@ -1,9 +1,9 @@
 import {StringModelProperty} from '../modelcreator/string.model.property';
 import {ModelProperty} from '../modelcreator/model.property';
 import {SortableEntity} from './SortableEntity';
-import {AutogeneratableModel} from './AutogeneratableModel';
+import {AutogeneratableOrderableModel} from './AutogeneratableOrderableModel';
 
-export class PartnerType extends AutogeneratableModel {
+export class PartnerType extends AutogeneratableOrderableModel {
   protected static _properties: ModelProperty[] = [
     new StringModelProperty({
       name: 'shortname',

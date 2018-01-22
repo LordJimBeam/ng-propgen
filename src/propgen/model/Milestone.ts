@@ -1,6 +1,4 @@
-import {AutogeneratableModel} from './AutogeneratableModel';
 import {ModelProperty} from '../modelcreator/model.property';
-import {SortableEntity} from './SortableEntity';
 import {StringModelProperty} from '../modelcreator/string.model.property';
 import {MarkdownModelProperty} from '../modelcreator/markdown.model.property';
 import {NumberModelProperty} from '../modelcreator/number.model.property';
@@ -12,8 +10,9 @@ import {WorkpackageService} from '../services/workpackage.service';
 import {Partner} from './Partner';
 import {Task} from './Task';
 import {Workpackage} from './Workpackage';
+import {AutogeneratableOrderableModel} from './AutogeneratableOrderableModel';
 
-export class Milestone extends AutogeneratableModel {
+export class Milestone extends AutogeneratableOrderableModel {
   protected static _properties: ModelProperty[] = [
     new StringModelProperty({
       name: 'title',

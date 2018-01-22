@@ -1,4 +1,3 @@
-import {AutogeneratableModel} from './AutogeneratableModel';
 import {ModelProperty} from '../modelcreator/model.property';
 import {StringModelProperty} from '../modelcreator/string.model.property';
 import {NumberModelProperty} from '../modelcreator/number.model.property';
@@ -8,8 +7,9 @@ import {WorkpackageService} from '../services/workpackage.service';
 import {PartnerService} from '../services/partner.service';
 import {Partner} from './Partner';
 import {MarkdownModelProperty} from '../modelcreator/markdown.model.property';
+import {AutogeneratableOrderableModel} from './AutogeneratableOrderableModel';
 
-export class Task extends AutogeneratableModel {
+export class Task extends AutogeneratableOrderableModel {
   protected static _properties: ModelProperty[] = [
     new StringModelProperty({
       name: 'title',

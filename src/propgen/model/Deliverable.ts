@@ -1,4 +1,3 @@
-import {AutogeneratableModel} from './AutogeneratableModel';
 import {ModelProperty} from '../modelcreator/model.property';
 import {StringModelProperty} from '../modelcreator/string.model.property';
 import {MarkdownModelProperty} from '../modelcreator/markdown.model.property';
@@ -15,8 +14,9 @@ import {Task} from './Task';
 import {ProducableType} from './ProducableType';
 import {DisseminationType} from './DisseminationType';
 import {Workpackage} from './Workpackage';
+import {AutogeneratableOrderableModel} from './AutogeneratableOrderableModel';
 
-export class Deliverable extends AutogeneratableModel {
+export class Deliverable extends AutogeneratableOrderableModel {
   protected static _properties = [
     new StringModelProperty({
       name: 'title',
