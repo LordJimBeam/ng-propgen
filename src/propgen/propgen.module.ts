@@ -43,6 +43,7 @@ import {TemplateService} from './services/template.service';
 import {VersionedBackendService} from './services/versioned-backend.service';
 import {AutomaticModelFormVersionListComponent} from './components/automatic-model-form-version-list/automatic-model-form-version-list.component';
 import {AutomaticModelFormVersionComponent} from './components/automatic-model-form-version/automatic-model-form-version.component';
+import {ReorderService} from './services/reorder.service';
 
 
 function automaticModelRoute(path: string, title: string, service: any) : Routes {
@@ -83,7 +84,6 @@ function automaticModelRoute(path: string, title: string, service: any) : Routes
         service: service
       }
     });
-    console.log(basicRoutes);
     return basicRoutes;
   }
   return basicRoutes;
@@ -150,7 +150,9 @@ function automaticModelRoute(path: string, title: string, service: any) : Routes
     TaskPartnerPMService,
     TemplateService,
     TextblockService,
-    WorkpackageService
+    WorkpackageService,
+
+    ReorderService,
   ],
   bootstrap: [],
   exports: [

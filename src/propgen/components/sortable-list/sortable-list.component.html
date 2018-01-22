@@ -5,7 +5,7 @@
 <mat-list [sortablejs]="entities" [sortablejsOptions]="sortableOptions">
   <mat-list-item *ngFor="let e of entities">
     <h3 mat-line>
-      <span class="sort-handle"><mat-icon>swap_vert</mat-icon></span>
+      <span *ngIf="canReorder" class="sort-handle"><mat-icon>swap_vert</mat-icon></span>
       {{e.title}}
     </h3>
     <button *ngIf="hasVersioning === true" mat-icon-button (click)="onVersionButtonClick(e)"><mat-icon mat-list-icon>change_history</mat-icon></button>

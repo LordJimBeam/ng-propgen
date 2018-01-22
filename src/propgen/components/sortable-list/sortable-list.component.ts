@@ -9,6 +9,7 @@ export class SortableListComponent {
   @Input() title: string;
   @Input() entities: SortableEntity[];
   @Input() hasVersioning: boolean = false;
+  @Input() canReorder: boolean = false;
   @Output() onCreateEntity = new EventEmitter();
   @Output() onEditEntity = new EventEmitter<SortableEntity>();
   @Output() onReorder = new EventEmitter<SortableEntity[]>();

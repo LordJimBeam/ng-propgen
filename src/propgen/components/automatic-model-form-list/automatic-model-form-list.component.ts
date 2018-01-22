@@ -4,6 +4,8 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {AutogeneratableModel} from '../../model/AutogeneratableModel';
 import {BackendService} from '../../services/backend.service';
 import {VersionedBackendService} from '../../services/versioned-backend.service';
+import {ReorderService} from '../../services/reorder.service';
+import {AutogeneratableOrderableModel} from '../../model/AutogeneratableOrderableModel';
 
 @Component({
   selector: 'propgen-automatic-model-form-list',
@@ -14,12 +16,14 @@ import {VersionedBackendService} from '../../services/versioned-backend.service'
   '  [title]="title"\n' +
   '  (onReorder)="onReorder($event)"\n' +
   '  [entities]="sortableData"\n' +
-  '  [hasVersioning]="hasVersioning">\n' +
+  '  [hasVersioning]="hasVersioning"\n' +
+  '  [canReorder]="canReorder">\n' +
   '</propgen-sortable-list>'
 })
 export class AutomaticModelFormListComponent {
   constructor(
     private router: Router,
+    private reorder: ReorderService,
     route: ActivatedRoute,
     injector: Injector
     ) {
@@ -27,15 +31,17 @@ export class AutomaticModelFormListComponent {
     route.data.subscribe((data) => {
       this.path = data.path;
       this.title = data.title;
-      let service = injector.get<BackendService<any>>(data.service);
-      this.hasVersioning = (service instanceof VersionedBackendService);
-      service.getAll().subscribe(
+      this.service = injector.get<BackendService<any>>(data.service);
+      this.hasVersioning = (this.service instanceof VersionedBackendService);
+      this.service.getAll().subscribe(
         (result) => {
           this.data = result;
+          if(this.data.length > 0) {
+            this.canReorder = this.data[0] instanceof AutogeneratableOrderableModel;
+          }
           Promise.all(this.data.map((d) => {
             return d.toListItem(injector);
           })).then((data) => {
-            console.log(data);
             this.sortableData = data;
           });
         },
@@ -50,6 +56,8 @@ export class AutomaticModelFormListComponent {
   protected title: string;
   protected path: string;
   protected hasVersioning: boolean = false;
+  protected canReorder: boolean = false;
+  protected service: BackendService<any>;
 
   protected add(): void {
     this.router.navigate([this.path, 'add']);
@@ -58,7 +66,15 @@ export class AutomaticModelFormListComponent {
     this.router.navigate([this.path, $event.id]);
   }
   protected onReorder($event): void {
+    if(this.canReorder) {
+      // TODO: freeze UI and display progress notification
+      let dirtyData = this.reorder.calculateReordering($event, <AutogeneratableOrderableModel[]>this.data);
+      this.service.saveOrder(dirtyData).then(() => {
 
+      }).catch((error) => {
+        console.error(error);
+      });
+    }
   }
   protected routeToVersion($event) {
     this.router.navigate([this.path, $event.id, 'versions']);

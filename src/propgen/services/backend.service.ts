@@ -3,6 +3,7 @@ import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 import {Observable} from 'rxjs/Observable';
 import {RESTModelInterface} from '../model/RESTModelInterface';
 import {hasOwnProperty} from 'tslint/lib/utils';
+import {AutogeneratableOrderableModel} from '../model/AutogeneratableOrderableModel';
 
 const baseUrl = 'http://localhost:8000';
 const secondsToCacheInvalidation = 60;
@@ -87,6 +88,7 @@ export abstract class BackendService<T extends RESTModelInterface> {
     return new Promise<void>((resolve, reject) => {
       if (!item) {
         reject();
+        return;
       }
       item = this.ensureConstructor(item);
       const oldItem = this.cachedItems.find(f => f.id === item.id);
@@ -113,9 +115,37 @@ export abstract class BackendService<T extends RESTModelInterface> {
     return new Promise<void>((resolve, reject) => {
       if (!item) {
         reject();
+        return;
       }
       this.internalDeleteItem(item.id).subscribe(() => {
         this.removeFromCache(item);
+        resolve();
+      }, (error) => {
+        reject(error);
+      });
+    });
+  }
+  public saveOrder(items: T[]): Promise<void> {
+    return new Promise<void>((resolve, reject) => {
+      if(!items) {
+        reject();
+        return;
+      }
+      if(items.length === 0) {
+        resolve();
+        return;
+      }
+      if(!(items[0] instanceof AutogeneratableOrderableModel)) {
+        reject();
+        return;
+      }
+      const patchSet = items.map((d) => {
+        return {
+          id: d.id,
+          order: d['order']
+        }
+      });
+      this.http.patch(this.baseUrl + this.getEndpoint() + '/order/', patchSet).subscribe(() => {
         resolve();
       }, (error) => {
         reject(error);
