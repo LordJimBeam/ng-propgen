@@ -1,5 +1,5 @@
 import {AutogeneratableModel} from './AutogeneratableModel';
-import {ModelProperty} from '../modelcreator/model.property';
+import {ModelProperty} from '../modelcreator/base/model.property';
 import {SortableEntity} from './SortableEntity';
 import {StringModelProperty} from '../modelcreator/string.model.property';
 import {TextModelProperty} from '../modelcreator/text.model.property';

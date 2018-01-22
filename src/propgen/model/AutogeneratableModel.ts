@@ -1,5 +1,5 @@
 import {RESTModelInterface} from './RESTModelInterface';
-import {ModelProperty} from '../modelcreator/model.property';
+import {ModelProperty} from '../modelcreator/base/model.property';
 import {SortableEntity} from './SortableEntity';
 import {Injector} from '@angular/core';
 

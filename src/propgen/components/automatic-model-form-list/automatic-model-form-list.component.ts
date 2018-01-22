@@ -52,20 +52,20 @@ export class AutomaticModelFormListComponent {
     });
   }
   private data: AutogeneratableModel[];
-  protected sortableData: SortableEntity[];
-  protected title: string;
+  public sortableData: SortableEntity[];
+  public title: string;
   protected path: string;
-  protected hasVersioning: boolean = false;
-  protected canReorder: boolean = false;
+  public hasVersioning: boolean = false;
+  public canReorder: boolean = false;
   protected service: BackendService<any>;
 
-  protected add(): void {
+  public add(): void {
     this.router.navigate([this.path, 'add']);
   }
-  protected edit($event): void {
+  public edit($event): void {
     this.router.navigate([this.path, $event.id]);
   }
-  protected onReorder($event): void {
+  public onReorder($event): void {
     if(this.canReorder) {
       // TODO: freeze UI and display progress notification
       let dirtyData = this.reorder.calculateReordering($event, <AutogeneratableOrderableModel[]>this.data);
@@ -76,7 +76,7 @@ export class AutomaticModelFormListComponent {
       });
     }
   }
-  protected routeToVersion($event) {
+  public routeToVersion($event) {
     this.router.navigate([this.path, $event.id, 'versions']);
   }
 }

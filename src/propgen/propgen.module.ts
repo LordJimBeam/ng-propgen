@@ -7,7 +7,7 @@ import {
   MatProgressSpinnerModule, MatSelectModule, MatSlideToggleModule, MatSnackBarModule, MatTabsModule,
   MatToolbarModule
 } from '@angular/material';
-import {RouterModule, Routes, Route} from '@angular/router';
+import {RouterModule} from '@angular/router';
 import {RootComponent} from './components/root/root.component';
 import {SortableListComponent} from './components/sortable-list/sortable-list.component';
 import {WorkpackageService} from './services/workpackage.service';
@@ -40,56 +40,520 @@ import {ProjectService} from './services/project.service';
 import {SettingService} from './services/setting.service';
 import {BooleanFormComponent} from './modelcreator/formcomponents/boolean.form.component';
 import {TemplateService} from './services/template.service';
-import {VersionedBackendService} from './services/versioned-backend.service';
 import {AutomaticModelFormVersionListComponent} from './components/automatic-model-form-version-list/automatic-model-form-version-list.component';
 import {AutomaticModelFormVersionComponent} from './components/automatic-model-form-version/automatic-model-form-version.component';
 import {ReorderService} from './services/reorder.service';
 
-
-function automaticModelRoute(path: string, title: string, service: any) : Routes {
-  let basicRoutes: Routes = [{
-      path: path + '/:id',
-      component: AutomaticModelFormComponent,
-      data: {
-        title: title,
-        service: service,
-        parent: path + 's'
+const componentRoutes = [
+  {
+    path:"deliverable/:id",
+    component:AutomaticModelFormComponent,
+    children:[
+      {
+        path:"versions",
+        component:AutomaticModelFormVersionListComponent,
+        data:{
+          title:"Deliverable",
+          service:DeliverableService
+        }
+      },
+      {
+        path:"version/:version_id",
+        component:AutomaticModelFormVersionComponent,
+        data:{
+          title:"Deliverable",
+          service:DeliverableService
+        }
       }
-    },
-    {
-      path: path + 's',
-      component: AutomaticModelFormListComponent,
-      data: {
-        title: title + 's',
-        service: service,
-        path: path
-      }
+    ],
+    data:{
+      title:"Deliverable",
+      service:DeliverableService,
+      parent:"deliverables"
     }
-  ];
-  let mock = new service();
-  if(mock instanceof VersionedBackendService) {
-    basicRoutes.unshift({
-      path: path + '/:id/versions',
-      component: AutomaticModelFormVersionListComponent,
-      data: {
-        title: title,
-        service: service
+  },
+  {
+    path:"deliverables",
+    component:AutomaticModelFormListComponent,
+    data:{
+      title:"Deliverables",
+      service:DeliverableService,
+      path:"deliverable"
+    }
+  },
+  {
+    path:"deliverablepartnertaskpm/:id",
+    component:AutomaticModelFormComponent,
+    children:[
+      {
+        path:"versions",
+        component:AutomaticModelFormVersionListComponent,
+        data:{
+          title:"DeliverablePartnerTaskPM",
+          service:DeliverablePartnerTaskPMService
+        }
+      },
+      {
+        path:"version/:version_id",
+        component:AutomaticModelFormVersionComponent,
+        data:{
+          title:"DeliverablePartnerTaskPM",
+          service:DeliverablePartnerTaskPMService
+        }
       }
-    });
-    basicRoutes.unshift({
-      path: path + '/:id/version/:version_id',
-      component: AutomaticModelFormVersionComponent,
-      data: {
-        title: title,
-        service: service
+    ],
+    data:{
+      title:"DeliverablePartnerTaskPM",
+      service:DeliverablePartnerTaskPMService,
+      parent:"deliverablepartnertaskpms"
+    }
+  },
+  {
+    path:"deliverablepartnertaskpms",
+    component:AutomaticModelFormListComponent,
+    data:{
+      title:"DeliverablePartnerTaskPMs",
+      service:DeliverablePartnerTaskPMService,
+      path:"deliverablepartnertaskpm"
+    }
+  },
+  {
+    path:"disseminationtype/:id",
+    component:AutomaticModelFormComponent,
+    data:{
+      title:"DisseminationType",
+      service:DisseminationtypeService,
+      parent:"disseminationtypes"
+    }
+  },
+  {
+    path:"disseminationtypes",
+    component:AutomaticModelFormListComponent,
+    data:{
+      title:"DisseminationTypes",
+      service:DisseminationtypeService,
+      path:"disseminationtype"
+    }
+  },
+  {
+    path:"milestone/:id",
+    component:AutomaticModelFormComponent,
+    children:[
+      {
+        path:"versions",
+        component:AutomaticModelFormVersionListComponent,
+        data:{
+          title:"Milestone",
+          service:MilestoneService
+        }
+      },
+      {
+        path:"version/:version_id",
+        component:AutomaticModelFormVersionComponent,
+        data:{
+          title:"Milestone",
+          service:MilestoneService
+        }
       }
-    });
-    return basicRoutes;
+    ],
+    data:{
+      title:"Milestone",
+      service:MilestoneService,
+      parent:"milestones"
+    }
+  },
+  {
+    path:"milestones",
+    component:AutomaticModelFormListComponent,
+    data:{
+      title:"Milestones",
+      service:MilestoneService,
+      path:"milestone"
+    }
+  },
+  {
+    path:"milestonepartnertaskpm/:id",
+    component:AutomaticModelFormComponent,
+    children:[
+      {
+        path:"versions",
+        component:AutomaticModelFormVersionListComponent,
+        data:{
+          title:"MilestonePartnerTaskPM",
+          service:MilestonePartnerTaskPMService
+        }
+      },
+      {
+        path:"version/:version_id",
+        component:AutomaticModelFormVersionComponent,
+        data:{
+          title:"MilestonePartnerTaskPM",
+          service:MilestonePartnerTaskPMService
+        }
+      }
+    ],
+    data:{
+      title:"MilestonePartnerTaskPM",
+      service:MilestonePartnerTaskPMService,
+      parent:"milestonepartnertaskpms"
+    }
+  },
+  {
+    path:"milestonepartnertaskpms",
+    component:AutomaticModelFormListComponent,
+    data:{
+      title:"MilestonePartnerTaskPMs",
+      service:MilestonePartnerTaskPMService,
+      path:"milestonepartnertaskpm"
+    }
+  },
+  {
+    path:"partner/:id",
+    component:AutomaticModelFormComponent,
+    children:[
+      {
+        path:"versions",
+        component:AutomaticModelFormVersionListComponent,
+        data:{
+          title:"Partner",
+          service:PartnerService
+        }
+      },
+      {
+        path:"version/:version_id",
+        component:AutomaticModelFormVersionComponent,
+        data:{
+          title:"Partner",
+          service:PartnerService
+        }
+      }
+    ],
+    data:{
+      title:"Partner",
+      service:PartnerService,
+      parent:"partners"
+    }
+  },
+  {
+    path:"partners",
+    component:AutomaticModelFormListComponent,
+    data:{
+      title:"Partners",
+      service:PartnerService,
+      path:"partner"
+    }
+  },
+  {
+    path:"partnertype/:id",
+    component:AutomaticModelFormComponent,
+    children:[
+      {
+        path:"versions",
+        component:AutomaticModelFormVersionListComponent,
+        data:{
+          title:"PartnerType",
+          service:PartnertypeService
+        }
+      },
+      {
+        path:"version/:version_id",
+        component:AutomaticModelFormVersionComponent,
+        data:{
+          title:"PartnerType",
+          service:PartnertypeService
+        }
+      }
+    ],
+    data:{
+      title:"PartnerType",
+      service:PartnertypeService,
+      parent:"partnertypes"
+    }
+  },
+  {
+    path:"partnertypes",
+    component:AutomaticModelFormListComponent,
+    data:{
+      title:"PartnerTypes",
+      service:PartnertypeService,
+      path:"partnertype"
+    }
+  },
+  {
+    path:"producabletype/:id",
+    component:AutomaticModelFormComponent,
+    data:{
+      title:"ProducableType",
+      service:ProducabletypeService,
+      parent:"producabletypes"
+    }
+  },
+  {
+    path:"producabletypes",
+    component:AutomaticModelFormListComponent,
+    data:{
+      title:"ProducableTypes",
+      service:ProducabletypeService,
+      path:"producabletype"
+    }
+  },
+  {
+    path:"project/:id",
+    component:AutomaticModelFormComponent,
+    children:[
+      {
+        path:"versions",
+        component:AutomaticModelFormVersionListComponent,
+        data:{
+          title:"Project",
+          service:ProjectService
+        }
+      },
+      {
+        path:"version/:version_id",
+        component:AutomaticModelFormVersionComponent,
+        data:{
+          title:"Project",
+          service:ProjectService
+        }
+      }
+    ],
+    data:{
+      title:"Project",
+      service:ProjectService,
+      parent:"projects"
+    }
+  },
+  {
+    path:"projects",
+    component:AutomaticModelFormListComponent,
+    data:{
+      title:"Projects",
+      service:ProjectService,
+      path:"project"
+    }
+  },
+  {
+    path:"setting/:id",
+    component:AutomaticModelFormComponent,
+    children:[
+      {
+        path:"versions",
+        component:AutomaticModelFormVersionListComponent,
+        data:{
+          title:"Setting",
+          service:SettingService
+        }
+      },
+      {
+        path:"version/:version_id",
+        component:AutomaticModelFormVersionComponent,
+        data:{
+          title:"Setting",
+          service:SettingService
+        }
+      }
+    ],
+    data:{
+      title:"Setting",
+      service:SettingService,
+      parent:"settings"
+    }
+  },
+  {
+    path:"settings",
+    component:AutomaticModelFormListComponent,
+    data:{
+      title:"Settings",
+      service:SettingService,
+      path:"setting"
+    }
+  },
+  {
+    path:"task/:id",
+    component:AutomaticModelFormComponent,
+    children:[
+      {
+        path:"versions",
+        component:AutomaticModelFormVersionListComponent,
+        data:{
+          title:"Task",
+          service:TaskService
+        }
+      },
+      {
+        path:"version/:version_id",
+        component:AutomaticModelFormVersionComponent,
+        data:{
+          title:"Task",
+          service:TaskService
+        }
+      }
+    ],
+    data:{
+      title:"Task",
+      service:TaskService,
+      parent:"tasks"
+    }
+  },
+  {
+    path:"tasks",
+    component:AutomaticModelFormListComponent,
+    data:{
+      title:"Tasks",
+      service:TaskService,
+      path:"task"
+    }
+  },
+  {
+    path:"taskpartnerpm/:id",
+    component:AutomaticModelFormComponent,
+    children:[
+      {
+        path:"versions",
+        component:AutomaticModelFormVersionListComponent,
+        data:{
+          title:"TaskPartnerPM",
+          service:TaskPartnerPMService
+        }
+      },
+      {
+        path:"version/:version_id",
+        component:AutomaticModelFormVersionComponent,
+        data:{
+          title:"TaskPartnerPM",
+          service:TaskPartnerPMService
+        }
+      }
+    ],
+    data:{
+      title:"TaskPartnerPM",
+      service:TaskPartnerPMService,
+      parent:"taskpartnerpms"
+    }
+  },
+  {
+    path:"taskpartnerpms",
+    component:AutomaticModelFormListComponent,
+    data:{
+      title:"TaskPartnerPMs",
+      service:TaskPartnerPMService,
+      path:"taskpartnerpm"
+    }
+  },
+  {
+    path:"template/:id",
+    component:AutomaticModelFormComponent,
+    children:[
+      {
+        path:"versions",
+        component:AutomaticModelFormVersionListComponent,
+        data:{
+          title:"Template",
+          service:TemplateService
+        }
+      },
+      {
+        path:"version/:version_id",
+        component:AutomaticModelFormVersionComponent,
+        data:{
+          title:"Template",
+          service:TemplateService
+        }
+      }
+    ],
+    data:{
+      title:"Template",
+      service:TemplateService,
+      parent:"templates"
+    }
+  },
+  {
+    path:"templates",
+    component:AutomaticModelFormListComponent,
+    data:{
+      title:"Templates",
+      service:TemplateService,
+      path:"template"
+    }
+  },
+  {
+    path:"textblock/:id",
+    component:AutomaticModelFormComponent,
+    children:[
+      {
+        path:"versions",
+        component:AutomaticModelFormVersionListComponent,
+        data:{
+          title:"Textblock",
+          service:TextblockService
+        }
+      },
+      {
+        path:"version/:version_id",
+        component:AutomaticModelFormVersionComponent,
+        data:{
+          title:"Textblock",
+          service:TextblockService
+        }
+      }
+    ],
+    data:{
+      title:"Textblock",
+      service:TextblockService,
+      parent:"textblocks"
+    }
+  },
+  {
+    path:"textblocks",
+    component:AutomaticModelFormListComponent,
+    data:{
+      title:"Textblocks",
+      service:TextblockService,
+      path:"textblock"
+    }
+  },
+  {
+    path:"workpackage/:id",
+    component:AutomaticModelFormComponent,
+    children:[
+      {
+        path:"versions",
+        component:AutomaticModelFormVersionListComponent,
+        data:{
+          title:"Workpackage",
+          service:WorkpackageService
+        }
+      },
+      {
+        path:"version/:version_id",
+        component:AutomaticModelFormVersionComponent,
+        data:{
+          title:"Workpackage",
+          service:WorkpackageService
+        }
+      }
+    ],
+    data:{
+      title:"Workpackage",
+      service:WorkpackageService,
+      parent:"workpackages"
+    }
+  },
+  {
+    path:"workpackages",
+    component:AutomaticModelFormListComponent,
+    data:{
+      title:"Workpackages",
+      service:WorkpackageService,
+      path:"workpackage"
+    }
+  },
+  {
+    path: '',
+    component: MenuComponent
   }
-  return basicRoutes;
-}
-
-
+];
 
 @NgModule({
   declarations: [
@@ -116,7 +580,7 @@ function automaticModelRoute(path: string, title: string, service: any) : Routes
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
-    RouterModule,
+    RouterModule.forChild(componentRoutes),
 
     SortablejsModule,
     MarkdownModule,
@@ -158,28 +622,8 @@ function automaticModelRoute(path: string, title: string, service: any) : Routes
   exports: [
     MenuComponent,
     RootComponent,
+    RouterModule,
   ]
 })
 export class PropgenModule {
-  static routes: Routes = [].concat.apply([], [
-    automaticModelRoute('deliverable', 'Deliverable', DeliverableService),
-    automaticModelRoute('deliverablepartnertaskpm', 'DeliverablePartnerTaskPM', DeliverablePartnerTaskPMService),
-    automaticModelRoute('disseminationtype', 'Dissemination type', DisseminationtypeService),
-    automaticModelRoute('milestone', 'Milestone', MilestoneService),
-    automaticModelRoute('milestonepartnertaskpm', 'MilestonePartnerTaskPM', MilestonePartnerTaskPMService),
-    automaticModelRoute('partner', 'Partner', PartnerService),
-    automaticModelRoute('partnertype', 'Partnertype', PartnertypeService),
-    automaticModelRoute('producabletype', 'Producable type', ProducabletypeService),
-    automaticModelRoute('project', 'Project', ProjectService),
-    automaticModelRoute('setting', 'Setting', SettingService),
-    automaticModelRoute('task', 'Task', TaskService),
-    automaticModelRoute('taskpartnerpm', 'TaskPartnerPM', TaskPartnerPMService),
-    automaticModelRoute('template', 'Template', TemplateService),
-    automaticModelRoute('textblock', 'Textblock', TextblockService),
-    automaticModelRoute('workpackage', 'Workpackage', WorkpackageService),
-    [{
-      path: '',
-      component: MenuComponent
-    }]
-  ]);
 }

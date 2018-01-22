@@ -1,7 +1,9 @@
-import {ModelProperty} from './model.property';
-import {StringFormComponent} from './formcomponents/string.form.component';
+import {ModelProperty} from './base/model.property';
 import {Validators} from '@angular/forms';
+import {DefaultComponent} from '../decorators/default-component.decorator';
+import {StringFormComponent} from './formcomponents/string.form.component';
 
+@DefaultComponent(StringFormComponent)
 export class StringModelProperty extends ModelProperty<string> {
   public minLength: number;
   public maxLength: number;

@@ -1,7 +1,6 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
-import {ModelFormComponent} from './model.form.component';
-import {ModelProperty} from '../model.property';
-import {EmailModelProperty} from '../email.model.property';
+import {ModelFormComponent} from './base/model.form.component';
+import {ModelProperty} from '../base/model.property';
 
 @Component({
   selector: 'propgen-email-form-input',
@@ -29,15 +28,15 @@ export class EmailFormComponent extends ModelFormComponent {
     }
   }
   @Output() dataChange = new EventEmitter<string>();
-  private _propertyDescription: EmailModelProperty;
-  @Input() set propertyDescription(desc: EmailModelProperty) {
+  private _propertyDescription: ModelProperty;
+  @Input() set propertyDescription(desc: ModelProperty) {
     this._propertyDescription = desc;
     this.updatePlaceholder(desc);
     this.updateHelpText(desc);
     this.formControl.setValidators(desc.getValidators());
   };
   public setPropertyDescription(desc: ModelProperty) {
-    this.propertyDescription = (<EmailModelProperty>desc);
+    this.propertyDescription = desc;
   }
   protected getErrorText(): string {
     if('email' in this._formControl.errors) {

@@ -1,8 +1,6 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
-import {StringModelProperty} from '../string.model.property';
-import {ModelFormComponent} from './model.form.component';
-import {ModelProperty} from '../model.property';
-import {FormControl} from '@angular/forms';
+import {ModelFormComponent} from './base/model.form.component';
+import {ModelProperty} from '../base/model.property';
 
 @Component({
   selector: 'propgen-string-form-input',
@@ -30,15 +28,15 @@ export class StringFormComponent extends ModelFormComponent {
     }
   }
   @Output() dataChange = new EventEmitter<string>();
-  private _propertyDescription: StringModelProperty;
-  @Input() set propertyDescription(desc: StringModelProperty) {
+  private _propertyDescription: ModelProperty;
+  @Input() set propertyDescription(desc: ModelProperty) {
     this._propertyDescription = desc;
     this.updatePlaceholder(desc);
     this.updateHelpText(desc);
     this.formControl.setValidators(desc.getValidators());
   };
   public setPropertyDescription(desc: ModelProperty) {
-    this.propertyDescription = (<StringModelProperty>desc);
+    this.propertyDescription = desc;
   }
   protected getErrorText(): string {
     if('minlength' in this.formControl.errors) {

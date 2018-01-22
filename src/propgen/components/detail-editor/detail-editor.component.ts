@@ -6,7 +6,7 @@ import {
 import {ControlValueAccessor, FormGroup, NG_VALUE_ACCESSOR} from '@angular/forms';
 import {MarkdownPreviewComponent} from '../../modelcreator/formcomponents/markdown-preview/markdown-preview.component';
 import {StringFormComponent} from '../../modelcreator/formcomponents/string.form.component';
-import {ModelFormComponent} from '../../modelcreator/formcomponents/model.form.component';
+import {ModelFormComponent} from '../../modelcreator/formcomponents/base/model.form.component';
 import {NumberFormComponent} from '../../modelcreator/formcomponents/number.form.component';
 import {ForeignKeyFormComponent} from '../../modelcreator/formcomponents/foreign.form.component';
 import {AutogeneratableModel} from '../../model/AutogeneratableModel';
@@ -15,24 +15,21 @@ import {ForeignManyFormComponent} from '../../modelcreator/formcomponents/foreig
 import {EmailFormComponent} from '../../modelcreator/formcomponents/email.form.component';
 import {BooleanFormComponent} from '../../modelcreator/formcomponents/boolean.form.component';
 
-
-const typeToComponentMap = new Object({
-  BooleanModelProperty: BooleanFormComponent,
-  EmailModelProperty: EmailFormComponent,
-  ForeignKeyModelProperty: ForeignKeyFormComponent,
-  ForeignManyModelProperty: ForeignManyFormComponent,
-  NumberModelProperty: NumberFormComponent,
-  MarkdownModelProperty: MarkdownPreviewComponent,
-  StringModelProperty: StringFormComponent,
-  TextModelProperty: TextFormComponent
-});
-const dynamicComponents = Object.keys(typeToComponentMap).map((key) => typeToComponentMap[key]);
-
+const formModelComponents = [
+  BooleanFormComponent,
+  EmailFormComponent,
+  ForeignKeyFormComponent,
+  ForeignManyFormComponent,
+  NumberFormComponent,
+  MarkdownPreviewComponent,
+  StringFormComponent,
+  TextFormComponent,
+];
 
 @Component({
   selector: 'propgen-detail-editor',
   templateUrl: './detail-editor.component.html',
-  entryComponents: dynamicComponents,
+  entryComponents: formModelComponents,
   providers: [{
     provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => DetailEditorComponent), multi: true
   }]
@@ -48,13 +45,13 @@ export class DetailEditorComponent implements ControlValueAccessor, AfterViewIni
   @Output() onCancel = new EventEmitter();
   @ViewChild('propertyContainer', { read: ViewContainerRef }) propertyContainer: ViewContainerRef;
 
-  protected formGroup: FormGroup = new FormGroup({});
+  public formGroup: FormGroup = new FormGroup({});
 
-  protected onSaveClick() {
+  public onSaveClick() {
     this.onSave.emit();
   }
 
-  protected onCancelClick() {
+  public onCancelClick() {
     this.onCancel.emit();
   }
 
@@ -88,14 +85,8 @@ export class DetailEditorComponent implements ControlValueAccessor, AfterViewIni
       let factories = {};
       for(let prop of this._data.getProperties()) {
         if(!prop.component) {
-          // instance.constructor.name gets the TS class name during JS runtime. Object keys are always string
-          if(prop.constructor.name in typeToComponentMap) {
-            prop.component = typeToComponentMap[prop.constructor.name];
-          }
-          else {
-            console.warn(prop.name + ' (' + prop.constructor.name + ') has no attached component, skipping');
-            continue;
-          }
+          console.warn(prop.name + ' (' + prop.constructor.name + ') has no attached component, skipping ', prop);
+          continue;
         }
         if(!(prop.component in factories)) {
           factories[prop.component] = this.resolver.resolveComponentFactory(prop.component);

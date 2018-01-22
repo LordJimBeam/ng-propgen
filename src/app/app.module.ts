@@ -15,18 +15,14 @@ import {MarkdownModule} from 'ngx-md';
   imports: [
     BrowserModule,
     NoopAnimationsModule,
-    PropgenModule,
-    RouterModule.forRoot(
-      [
-        {
-          path: '',
-          children: PropgenModule.routes
-        },
-
-      ]
-    ),
+    RouterModule.forRoot([{
+      path: '',
+      loadChildren: '../propgen/propgen.module#PropgenModule'
+    }]),
     SortablejsModule.forRoot({}),
-    MarkdownModule.forRoot()
+    MarkdownModule.forRoot(),
+
+    PropgenModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

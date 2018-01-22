@@ -1,9 +1,7 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
-import {StringModelProperty} from '../string.model.property';
-import {ModelFormComponent} from './model.form.component';
-import {ModelProperty} from '../model.property';
-import {NumberModelProperty} from '../number.model.property';
-import {FormControl} from '@angular/forms';
+import {ModelFormComponent} from './base/model.form.component';
+import {ModelProperty} from '../base/model.property';
+import {hasOwnProperty} from 'tslint/lib/utils';
 
 @Component({
   selector: 'propgen-number-form-input',
@@ -31,20 +29,20 @@ export class NumberFormComponent extends ModelFormComponent {
     }
   }
   @Output() dataChange = new EventEmitter<number>();
-  private _propertyDescription: NumberModelProperty;
-  @Input() set propertyDescription(desc: NumberModelProperty) {
+  private _propertyDescription: ModelProperty;
+  @Input() set propertyDescription(desc: ModelProperty) {
     this._propertyDescription = desc;
     this.updatePlaceholder(desc);
     this.updateHelpText(desc);
-    if(desc.decimalPlaces > 0) {
-      this.step = Math.pow(10, -desc.decimalPlaces);
+    if(hasOwnProperty(desc, 'decimalPlaces') && desc['decimalPlaces'] > 0) {
+      this.step = Math.pow(10, -desc['decimalPlaces']);
     }
     this.formControl.setValidators(desc.getValidators());
   };
   public setPropertyDescription(desc: ModelProperty) {
-    this.propertyDescription = (<NumberModelProperty>desc);
+    this.propertyDescription = desc;
   }
-  private step: number = 1;
+  public step: number = 1;
   protected getErrorText(): string {
     if('min' in this.formControl.errors) {
       return 'Value must be greater or equal than ' + this.formControl.errors.min.min;

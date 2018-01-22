@@ -1,5 +1,5 @@
 import {StringModelProperty} from '../modelcreator/string.model.property';
-import {ModelProperty} from '../modelcreator/model.property';
+import {ModelProperty} from '../modelcreator/base/model.property';
 import {SortableEntity} from './SortableEntity';
 import {AutogeneratableOrderableModel} from './AutogeneratableOrderableModel';
 

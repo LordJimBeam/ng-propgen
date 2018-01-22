@@ -1,4 +1,4 @@
-import {ModelProperty} from '../modelcreator/model.property';
+import {ModelProperty} from '../modelcreator/base/model.property';
 import {StringModelProperty} from '../modelcreator/string.model.property';
 import {MarkdownModelProperty} from '../modelcreator/markdown.model.property';
 import {SortableEntity} from './SortableEntity';

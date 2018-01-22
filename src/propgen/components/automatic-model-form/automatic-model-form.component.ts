@@ -68,18 +68,18 @@ export class AutomaticModelFormComponent implements OnDestroy {
       })
     });
   }
-  protected ready = false;
+  public ready = false;
   protected service: BackendService<any>;
-  protected data: RESTModelInterface;
+  public data: RESTModelInterface;
   protected listPath: string;
-  protected title: string;
+  public title: string;
   protected snackBarRef: MatSnackBarRef<SimpleSnackBar>;
   ngOnDestroy(): void {
     if(this.snackBarRef) {
       this.snackBarRef.dismiss();
     }
   }
-  protected onSave() {
+  public onSave() {
     this.service.save(this.data)
       .then(() => this.routeToList())
       .catch((error) => {
@@ -89,7 +89,7 @@ export class AutomaticModelFormComponent implements OnDestroy {
         });
       });
   }
-  protected onCancel() {
+  public onCancel() {
     this.routeToList();
   }
   protected routeToList() {

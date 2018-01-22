@@ -59,17 +59,17 @@ export class AutomaticModelFormVersionComponent implements OnDestroy {
       })
     });
   }
-  protected ready = false;
+  public ready = false;
   protected title: string;
   protected snackBarRef: MatSnackBarRef<SimpleSnackBar>;
-  protected data: RESTModelInterface;
+  public data: RESTModelInterface;
   protected version: Version<any>;
   ngOnDestroy(): void {
     if(this.snackBarRef) {
       this.snackBarRef.dismiss();
     }
   }
-  protected onCancel() {
+  public onCancel() {
     this.router.navigate(['../../versions/'], { relativeTo: this.route });
   }
 }

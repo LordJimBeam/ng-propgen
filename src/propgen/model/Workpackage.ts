@@ -1,12 +1,9 @@
-import {ModelProperty} from '../modelcreator/model.property';
+import {ModelProperty} from '../modelcreator/base/model.property';
 import {StringModelProperty} from '../modelcreator/string.model.property';
 import {MarkdownModelProperty} from '../modelcreator/markdown.model.property';
-import {ForeignKeyModelProperty} from '../modelcreator/foreign.model.property';
+import {ForeignKeyModelProperty} from '../modelcreator/foreign-single.model.property';
 import {Partner} from './Partner';
 import {PartnerService} from '../services/partner.service';
-import {SortableEntity} from './SortableEntity';
-import {AutogeneratableModel} from './AutogeneratableModel';
-import {NumberModelProperty} from '../modelcreator/number.model.property';
 import {AutogeneratableOrderableModel} from './AutogeneratableOrderableModel';
 
 export class Workpackage extends AutogeneratableOrderableModel {

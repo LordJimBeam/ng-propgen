@@ -15,25 +15,25 @@ export class SortableListComponent {
   @Output() onReorder = new EventEmitter<SortableEntity[]>();
   @Output() onVersionEntity = new EventEmitter<SortableEntity>();
 
-  protected sortableOptions = {
+  public sortableOptions = {
     // see https://github.com/RubaXa/Sortable#options
     handle: '.sort-handle',
     onUpdate: ($event) => this.onDropSuccessful($event)
   };
 
-  protected onAddButtonClick() {
+  public onAddButtonClick() {
     this.onCreateEntity.emit();
   }
 
-  protected onEditButtonClick(entity: SortableEntity) {
+  public onEditButtonClick(entity: SortableEntity) {
     this.onEditEntity.emit(entity);
   }
 
-  protected onDropSuccessful($event) {
+  public onDropSuccessful($event) {
     this.onReorder.emit(this.entities);
   }
 
-  protected onVersionButtonClick(entity: SortableEntity) {
+  public onVersionButtonClick(entity: SortableEntity) {
     this.onVersionEntity.emit(entity);
   }
 

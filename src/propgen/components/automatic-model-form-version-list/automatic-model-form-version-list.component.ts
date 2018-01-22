@@ -58,8 +58,8 @@ export class AutomaticModelFormVersionListComponent implements OnDestroy {
       });
     });
   }
-  @Input() protected title: string;
-  protected ready = false;
+  @Input() public title: string;
+  public ready = false;
   protected snackBarRef: MatSnackBarRef<SimpleSnackBar>;
   ngOnDestroy() {
     if(this.snackBarRef) {
@@ -74,7 +74,7 @@ export class AutomaticModelFormVersionListComponent implements OnDestroy {
     this._data = d;
     this.updatePageData();
   }
-  protected currentData = [];
+  public currentData = [];
   protected pageSize = 10;
   protected page = 0;
   protected onPaginatorChanged($event) {

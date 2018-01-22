@@ -1,6 +1,9 @@
-import {ModelProperty} from './model.property';
+import {ModelProperty} from './base/model.property';
 import {Validators} from '@angular/forms';
+import {DefaultComponent} from '../decorators/default-component.decorator';
+import {EmailFormComponent} from './formcomponents/email.form.component';
 
+@DefaultComponent(EmailFormComponent)
 export class EmailModelProperty extends ModelProperty<string> {
   public constructor(init?: Partial<EmailModelProperty>) {
     super();

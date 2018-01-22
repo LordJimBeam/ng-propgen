@@ -1,7 +1,6 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
-import {ModelFormComponent} from './model.form.component';
-import {ModelProperty} from '../model.property';
-import {BooleanModelProperty} from '../boolean.model.property';
+import {ModelFormComponent} from './base/model.form.component';
+import {ModelProperty} from '../base/model.property';
 
 @Component({
   selector: 'propgen-boolean-form-input',
@@ -36,14 +35,14 @@ export class BooleanFormComponent extends ModelFormComponent {
     }
   }
   @Output() dataChange = new EventEmitter<boolean>();
-  private _propertyDescription: BooleanModelProperty;
-  @Input() set propertyDescription(desc: BooleanModelProperty) {
+  private _propertyDescription: ModelProperty;
+  @Input() set propertyDescription(desc: ModelProperty) {
     this._propertyDescription = desc;
     this.updatePlaceholder(desc);
     this.updateHelpText(desc);
     this.formControl.setValidators(desc.getValidators());
   };
   public setPropertyDescription(desc: ModelProperty) {
-    this.propertyDescription = (<BooleanModelProperty>desc);
+    this.propertyDescription = desc;
   }
 }

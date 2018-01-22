@@ -1,6 +1,9 @@
-import {ModelProperty} from './model.property';
+import {ModelProperty} from './base/model.property';
 import {Validators} from '@angular/forms';
+import {DefaultComponent} from '../decorators/default-component.decorator';
+import {NumberFormComponent} from './formcomponents/number.form.component';
 
+@DefaultComponent(NumberFormComponent)
 export class NumberModelProperty extends ModelProperty<number> {
   public maxDigits: number;
   public decimalPlaces: number;

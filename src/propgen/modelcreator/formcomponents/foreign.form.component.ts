@@ -1,11 +1,9 @@
 import {Component, EventEmitter, Injector, Input, Output} from '@angular/core';
-import {StringModelProperty} from '../string.model.property';
-import {ModelFormComponent} from './model.form.component';
-import {ModelProperty} from '../model.property';
-import {NumberModelProperty} from '../number.model.property';
-import {ForeignKeyModelProperty} from '../foreign.model.property';
+import {ModelFormComponent} from './base/model.form.component';
 import {BackendService} from '../../services/backend.service';
 import {SortableEntity} from '../../model/SortableEntity';
+import {ForeignModelProperty} from '../base/foreign-model.property';
+import {ModelProperty} from '../base/model.property';
 
 @Component({
   selector: 'propgen-foreign-key-form-input',
@@ -35,8 +33,8 @@ export class ForeignKeyFormComponent extends ModelFormComponent {
     }
   }
   @Output() dataChange = new EventEmitter<number>();
-  private _propertyDescription: ForeignKeyModelProperty;
-  @Input() set propertyDescription(desc: ForeignKeyModelProperty) {
+  private _propertyDescription: ForeignModelProperty;
+  @Input() set propertyDescription(desc: ForeignModelProperty) {
     this._propertyDescription = desc;
     const dataService = (<BackendService<any>>this.injector.get(desc.service));
     dataService.getAll().subscribe((data) => {
@@ -68,10 +66,10 @@ export class ForeignKeyFormComponent extends ModelFormComponent {
     this.formControl.setValidators(desc.getValidators());
   };
   public setPropertyDescription(desc: ModelProperty) {
-    this.propertyDescription = (<ForeignKeyModelProperty>desc);
+    this.propertyDescription = (<ForeignModelProperty>desc);
   }
 
-  protected entityList: SortableEntity[];
+  public entityList: SortableEntity[];
 
 
 }

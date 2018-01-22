@@ -1,4 +1,4 @@
-import {ValidationErrors, ValidatorFn, Validators} from '@angular/forms';
+import {ValidatorFn, Validators} from '@angular/forms';
 
 export abstract class ModelProperty<T = {}> {
   public name: string;
