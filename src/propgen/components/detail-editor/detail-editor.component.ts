@@ -88,10 +88,7 @@ export class DetailEditorComponent implements ControlValueAccessor, AfterViewIni
           console.warn(prop.name + ' (' + prop.constructor.name + ') has no attached component, skipping ', prop);
           continue;
         }
-        if(!(prop.component in factories)) {
-          factories[prop.component] = this.resolver.resolveComponentFactory(prop.component);
-        }
-        let factory = factories[prop.component];
+        let factory = this.resolver.resolveComponentFactory(prop.component);
         let componentRef = this.propertyContainer.createComponent(factory);
         let instance = (<ModelFormComponent>componentRef.instance);
         instance.data = this._data[prop.name];
