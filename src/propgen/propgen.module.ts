@@ -7,7 +7,7 @@ import {
   MatProgressSpinnerModule, MatSelectModule, MatSlideToggleModule, MatSnackBarModule, MatTabsModule,
   MatToolbarModule
 } from '@angular/material';
-import {RouterModule} from '@angular/router';
+import {RouterModule, Routes} from '@angular/router';
 import {RootComponent} from './components/root/root.component';
 import {SortableListComponent} from './components/sortable-list/sortable-list.component';
 import {WorkpackageService} from './services/workpackage.service';
@@ -43,6 +43,8 @@ import {TemplateService} from './services/template.service';
 import {AutomaticModelFormVersionListComponent} from './components/automatic-model-form-version-list/automatic-model-form-version-list.component';
 import {AutomaticModelFormVersionComponent} from './components/automatic-model-form-version/automatic-model-form-version.component';
 import {ReorderService} from './services/reorder.service';
+import {DefaultBackendService} from './services/default-backend.service';
+import {CatchAllComponent} from './components/catch-all/catch-all.component';
 
 const componentRoutes = [
   {
@@ -555,12 +557,24 @@ const componentRoutes = [
   }
 ];
 
+const catchAll: Routes = [
+  {
+    path: '',
+    component: MenuComponent,
+  },
+  {
+    path: '**',
+    component: CatchAllComponent
+  }
+];
+
 @NgModule({
   declarations: [
     AutomaticModelFormComponent,
     AutomaticModelFormListComponent,
     AutomaticModelFormVersionComponent,
     AutomaticModelFormVersionListComponent,
+    CatchAllComponent,
     DetailEditorComponent,
     MenuComponent,
     RootComponent,
@@ -580,7 +594,7 @@ const componentRoutes = [
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
-    RouterModule.forChild(componentRoutes),
+    RouterModule.forChild(catchAll),
 
     SortablejsModule,
     MarkdownModule,
@@ -617,6 +631,7 @@ const componentRoutes = [
     WorkpackageService,
 
     ReorderService,
+    DefaultBackendService,
   ],
   bootstrap: [],
   exports: [

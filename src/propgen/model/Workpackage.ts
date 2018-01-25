@@ -5,37 +5,64 @@ import {ForeignKeyModelProperty} from '../modelcreator/foreign-single.model.prop
 import {Partner} from './Partner';
 import {PartnerService} from '../services/partner.service';
 import {AutogeneratableOrderableModel} from './AutogeneratableOrderableModel';
+import {Autogeneratable} from '../decorators/autogeneratable.decorator';
+import {RESTModelInterface} from './RESTModelInterface';
+import {AutogeneratableModel} from './AutogeneratableModel';
 
-export class Workpackage extends AutogeneratableOrderableModel {
-  protected static _properties: ModelProperty[] = [
-    new StringModelProperty({
-      name: 'title',
+
+@Autogeneratable({
+  backendPath: '/Workpackage',
+  detailRoute: 'workpackage/:id',
+  detailTitle: 'Workpackage',
+  listRoute: 'workpackages',
+  listTitle: 'Workpackages',
+  orderable: true,
+  hasVersioning: true
+},
+{
+  title: {
+    type: StringModelProperty,
+    typeSpecificData: {
       maxLength: 255
-    }),
-    new StringModelProperty({
-      name: 'tag',
-      maxLength: 20
-    }),
-    new MarkdownModelProperty({
-      name: 'objectives'
-    }),
-    new MarkdownModelProperty({
-      name: 'description'
-    }),
-    new StringModelProperty({
-      name: 'type',
-      verboseName: 'WP Type (RTD, MGMT, ...)',
-      helpText: 'Type of the WP, according to predefined EU list',
-      maxLength: 10,
-      defaultValue: 'RTD'
-    }),
-    new ForeignKeyModelProperty({
-      name: 'lead',
-      type: Partner,
-      service: PartnerService
-    })
-  ];
-  public getProperties() {
-    return Workpackage._properties;
+    }
   }
+  ,
+  tag: {
+    type: StringModelProperty,
+    typeSpecificData: {
+      maxLength: 20
+    }
+  }
+  ,
+  objectives: {
+    type: MarkdownModelProperty,
+  }
+  ,
+  description: {
+    type: MarkdownModelProperty,
+  }
+  ,
+  type: {
+    type: StringModelProperty,
+    verboseName: 'WP Type (RTD, MGMT, ...)',
+    helpText: 'Type of the WP, according to predefined EU list',
+    defaultValue: 'RTD',
+    typeSpecificData: {
+      maxLength: 10
+    }
+  }
+  ,
+  lead: {
+    type: ForeignKeyModelProperty,
+    typeSpecificData: {
+      type: Partner
+    }
+  }
+})
+export class Workpackage extends AutogeneratableModel {
+  getProperties(): ModelProperty[] {
+    return this['properties']();
+  }
+
+
 }

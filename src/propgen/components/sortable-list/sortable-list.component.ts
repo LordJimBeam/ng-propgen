@@ -23,6 +23,7 @@ export class SortableListComponent {
 
   public onAddButtonClick() {
     this.onCreateEntity.emit();
+    console.log(this.entities);
   }
 
   public onEditButtonClick(entity: SortableEntity) {

@@ -4,6 +4,8 @@ import {BackendService} from '../../services/backend.service';
 import {SortableEntity} from '../../model/SortableEntity';
 import {ForeignModelProperty} from '../base/foreign-model.property';
 import {ModelProperty} from '../base/model.property';
+import {PartnerService} from '../../services/partner.service';
+import {DefaultBackendService} from '../../services/default-backend.service';
 
 @Component({
   selector: 'propgen-foreign-key-form-input',
@@ -36,8 +38,8 @@ export class ForeignKeyFormComponent extends ModelFormComponent {
   private _propertyDescription: ForeignModelProperty;
   @Input() set propertyDescription(desc: ForeignModelProperty) {
     this._propertyDescription = desc;
-    const dataService = (<BackendService<any>>this.injector.get(desc.service));
-    dataService.getAll().subscribe((data) => {
+    const dataService = this.injector.get(DefaultBackendService);
+    dataService.getAll(desc.type).subscribe((data) => {
       Promise.all(data.map((d) => {
         return d.toListItem(this.injector);
       })).then((data) => {

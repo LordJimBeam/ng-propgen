@@ -5,7 +5,6 @@ import {Injector} from '@angular/core';
 
 export abstract class AutogeneratableModel implements RESTModelInterface {
   public id: number = 0;
-
   public abstract getProperties(): ModelProperty[];
   public toListItem(injector: Injector): Promise<SortableEntity> {
     return new Promise<SortableEntity>((resolve) =>  {
