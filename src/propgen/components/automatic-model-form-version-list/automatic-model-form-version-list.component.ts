@@ -1,10 +1,10 @@
-import {Component, Injector, Input, OnDestroy} from '@angular/core';
-import {Version} from '../../model/Version';
+import {Component, Input, OnDestroy} from '@angular/core';
+import {Version} from '../../model/REST';
 import {RESTModelInterface} from '../../model/RESTModelInterface';
-import {ActivatedRoute} from '@angular/router';
 import {HttpErrorResponse} from '@angular/common/http';
 import {MatSnackBar, MatSnackBarRef, SimpleSnackBar} from '@angular/material';
-import {VersionedBackendService} from '../../services/versioned-backend.service';
+import {AutomatedBackendService} from '../../services/automated-backend.service';
+import {AutogeneratableSettings} from '../../decorators/autogeneratable.decorator';
 
 @Component({
   selector: 'propgen-automatic-model-form-version-list',
@@ -20,45 +20,9 @@ import {VersionedBackendService} from '../../services/versioned-backend.service'
   '</mat-list>'
 })
 export class AutomaticModelFormVersionListComponent implements OnDestroy {
-  constructor(route: ActivatedRoute, injector: Injector, snackBar: MatSnackBar) {
-    // TODO: route.data is an observable so the lambda could be called multiple times in theory. check if this is an issue
-    route.data.subscribe((data) => {
-      this.title = data.title;
-      let service = injector.get<VersionedBackendService<RESTModelInterface>>(data.service);
-      route.paramMap.subscribe((paramMap) => {
-        let id = Number(paramMap.get('id'));
-        if (!isNaN(id) || id < 1) {
-          // requested specific id, fetch from server
-          service.getVersions(id).then((result) => {
-            this.data = result;
-            this.ready = true;
-          }).catch((error) => {
-            console.error(error);
-            if (error instanceof HttpErrorResponse && error.status === 404) {
-              // Django returns a 500 status code if the ID does not exist, but this is the future proof way
-              this.snackBarRef = snackBar.open('The ID you requested does not exist in the database.', 'Dismiss', {
-                verticalPosition: "top"
-              });
-            }
-            else {
-              let message = 'Could not get data from server.';
-              if (this.data) {
-                // already have some from the cache
-                message += ' Your data might be outdated.';
-              }
-              this.snackBarRef = snackBar.open(message, 'Reload page', {
-                verticalPosition: "top"
-              });
-              this.snackBarRef.onAction().subscribe(() => {
-                window.location.reload();
-              });
-            }
-          });
-        }
-      });
-    });
+  constructor(protected backend: AutomatedBackendService, protected snackBar: MatSnackBar) {
   }
-  @Input() public title: string;
+  public title: string;
   public ready = false;
   protected snackBarRef: MatSnackBarRef<SimpleSnackBar>;
   ngOnDestroy() {
@@ -70,14 +34,59 @@ export class AutomaticModelFormVersionListComponent implements OnDestroy {
   public get data() {
     return this._data;
   }
-  @Input() public set data(d: Array<Version<RESTModelInterface>>) {
+  public set data(d: Array<Version<RESTModelInterface>>) {
     this._data = d;
     this.updatePageData();
   }
+  protected _type;
+  protected _id;
+  @Input() public set type(t) {
+    this._type = t;
+    this.fetch();
+  };
+  @Input() public set params(p: any) {
+    this._id = p.id;
+    this.title = p.title;
+    this.fetch();
+  }
+  public fetch() {
+    if(this._id && this._type) {
+      let id = Number(this._id);
+      if (!isNaN(id) || id < 1) {
+        // requested specific id, fetch from server
+        this.backend.getVersions(this._type, id).then((result) => {
+          this.data = result;
+          this.ready = true;
+        }).catch((error) => {
+          console.error(error);
+          if (error instanceof HttpErrorResponse && error.status === 404) {
+            // Django returns a 500 status code if the ID does not exist, but this is the future proof way
+            this.snackBarRef = this.snackBar.open('The ID you requested does not exist in the database.', 'Dismiss', {
+              verticalPosition: "top"
+            });
+          }
+          else {
+            let message = 'Could not get data from server.';
+            if (this.data) {
+              // already have some from the cache
+              message += ' Your data might be outdated.';
+            }
+            this.snackBarRef = this.snackBar.open(message, 'Reload page', {
+              verticalPosition: "top"
+            });
+            this.snackBarRef.onAction().subscribe(() => {
+              window.location.reload();
+            });
+          }
+        });
+      }
+    }
+  }
+
   public currentData = [];
-  protected pageSize = 10;
-  protected page = 0;
-  protected onPaginatorChanged($event) {
+  public pageSize = 10;
+  public page = 0;
+  public onPaginatorChanged($event) {
     this.pageSize = $event.pageSize;
     this.page = $event.pageIndex;
 

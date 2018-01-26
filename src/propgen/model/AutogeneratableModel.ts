@@ -1,14 +1,23 @@
 import {RESTModelInterface} from './RESTModelInterface';
-import {ModelProperty} from '../modelcreator/base/model.property';
 import {SortableEntity} from './SortableEntity';
 import {Injector} from '@angular/core';
+import {AutogeneratableProperties, AutogeneratableSettings} from '../decorators/autogeneratable.decorator';
+
+export const fiveDigitsRegex = /^\d{1,5}([,|\.]\d{1,2})?$/;
+export const eightDigitsRegex = /^\d{1,8}([,|\.]\d{1,2})?$/;
+export const tenDigitsRegex = /^\d{1,10}([,|\.]\d{1,2})?$/;
 
 export abstract class AutogeneratableModel implements RESTModelInterface {
   public id: number = 0;
-  public abstract getProperties(): ModelProperty[];
+
   public toListItem(injector: Injector): Promise<SortableEntity> {
     return new Promise<SortableEntity>((resolve) =>  {
-      resolve(new SortableEntity(this.id, this[this.getProperties()[0].name]));
+      let properties = Object.keys(this.getProperties());
+      let title = '<none>';
+      if(properties.length > 0) {
+        title = this[properties[0]];
+      }
+      resolve(new SortableEntity(this.id, title));
     });
   };
   public get verboseName(): string {
@@ -22,13 +31,25 @@ export abstract class AutogeneratableModel implements RESTModelInterface {
     if('id' in data) {
       this.id = data['id'];
     }
-    for(let prop of this.getProperties()) {
-      if(prop.name in data) {
-        this[prop.name] = data[prop.name];
+    if('order' in data) {
+      this['order'] = data['order'];
+    }
+    let _autoProperties = this.getProperties();
+    for(let prop in _autoProperties) {
+      if(prop in data) {
+        this[prop] = data[prop];
       }
-      else if(prop.defaultValue) {
-        this[prop.name] = prop.defaultValue;
+      else if(_autoProperties[prop].defaultValue) {
+        this[prop] = _autoProperties[prop].defaultValue;
       }
     }
+  }
+
+  public getProperties(): AutogeneratableProperties {
+    return {};
+  };
+
+  public getAutoGeneratorSettings(): AutogeneratableSettings {
+    return null;
   }
 }

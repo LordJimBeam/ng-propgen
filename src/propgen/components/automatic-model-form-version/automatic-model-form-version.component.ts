@@ -1,10 +1,10 @@
-import {Component, Injector, OnDestroy} from '@angular/core';
+import {Component, Input, OnDestroy} from '@angular/core';
 import {MatSnackBar, MatSnackBarRef, SimpleSnackBar} from '@angular/material';
 import {ActivatedRoute, Router} from '@angular/router';
 import {HttpErrorResponse} from '@angular/common/http';
-import {Version} from '../../model/Version';
-import {VersionedBackendService} from '../../services/versioned-backend.service';
+import {Version} from '../../model/REST';
 import {RESTModelInterface} from '../../model/RESTModelInterface';
+import {AutomatedBackendService} from '../../services/automated-backend.service';
 
 @Component({
   selector: 'propgen-automatic-model-form-version',
@@ -17,53 +17,28 @@ import {RESTModelInterface} from '../../model/RESTModelInterface';
 })
 export class AutomaticModelFormVersionComponent implements OnDestroy {
   constructor(
-    snackBar: MatSnackBar,
-    injector: Injector,
+    protected snackBar: MatSnackBar,
     protected route: ActivatedRoute,
-    protected router: Router
+    protected router: Router,
+    protected backend: AutomatedBackendService
   ) {
-    route.data.subscribe((data) => {
-      this.title = data.title;
-      const service = injector.get<VersionedBackendService<any>>(data.service);
-      route.paramMap.subscribe((paramMap) => {
-        let id = Number(paramMap.get('id'));
-        let versionId = Number(paramMap.get('version_id'));
-        if(!isNaN(id) && id > 0 && !isNaN(versionId) && versionId > 0) {
-          // requested specific id, fetch from server
-          service.getVersion(id, versionId).then((result) => {
-            this.version = result;
-            let object = JSON.parse(result.serialized_data)[0];
-            console.log(object);
-            this.data = service.ensureConstructor(object.fields);
-            console.log(this.data);
-            this.ready = true;
-          }).catch((error) => {
-            console.error(error);
-            if(error instanceof HttpErrorResponse && error.status === 404) {
-              // Django returns a 500 status code if the ID does not exist, but this is the future proof way
-              this.snackBarRef = snackBar.open('The ID you requested does not exist in the database.', 'Dismiss', {
-                verticalPosition: "top"
-              });
-            }
-            else {
-              let message = 'Could not get data from server.';
-              this.snackBarRef = snackBar.open(message, 'Reload page', {
-                verticalPosition: "top"
-              });
-              this.snackBarRef.onAction().subscribe(() => {
-                window.location.reload();
-              });
-            }
-          });
-        }
-      })
-    });
   }
   public ready = false;
-  protected title: string;
   protected snackBarRef: MatSnackBarRef<SimpleSnackBar>;
   public data: RESTModelInterface;
   protected version: Version<any>;
+  protected _id;
+  protected _versionId;
+  protected _type;
+  @Input() public set params(p: any) {
+    this._id = p.id;
+    this._versionId = p.versionId;
+    this.fetch();
+  }
+  @Input() public set type(t) {
+    this._type = t;
+    this.fetch();
+  }
   ngOnDestroy(): void {
     if(this.snackBarRef) {
       this.snackBarRef.dismiss();
@@ -71,5 +46,37 @@ export class AutomaticModelFormVersionComponent implements OnDestroy {
   }
   public onCancel() {
     this.router.navigate(['../../versions/'], { relativeTo: this.route });
+  }
+  protected fetch() {
+    if(this._type && this._id && this._versionId) {
+      let id = Number(this._id);
+      let versionId = Number(this._versionId);
+      if (!isNaN(id) && id > 0 && !isNaN(versionId) && versionId > 0) {
+        // requested specific id, fetch from server
+        this.backend.getVersion(this._type, id, versionId).then((result) => {
+          this.version = result;
+          let object = JSON.parse(result.serialized_data)[0];
+          this.data = new this._type(object.fields);
+          this.ready = true;
+        }).catch((error) => {
+          console.error(error);
+          if (error instanceof HttpErrorResponse && error.status === 404) {
+            // Django returns a 500 status code if the ID does not exist, but this is the future proof way
+            this.snackBarRef = this.snackBar.open('The ID you requested does not exist in the database.', 'Dismiss', {
+              verticalPosition: "top"
+            });
+          }
+          else {
+            let message = 'Could not get data from server.';
+            this.snackBarRef = this.snackBar.open(message, 'Reload page', {
+              verticalPosition: "top"
+            });
+            this.snackBarRef.onAction().subscribe(() => {
+              window.location.reload();
+            });
+          }
+        });
+      }
+    }
   }
 }

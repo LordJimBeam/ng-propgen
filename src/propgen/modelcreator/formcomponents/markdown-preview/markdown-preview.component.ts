@@ -1,6 +1,6 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {ModelFormComponent} from '../base/model.form.component';
-import {ModelProperty} from '../../base/model.property';
+import {ModelPropertyType} from '../../base/model.property.type';
 
 @Component({
   selector: 'propgen-markdown-preview',
@@ -26,14 +26,14 @@ export class MarkdownPreviewComponent extends ModelFormComponent {
   }
   @Output() dataChange = new EventEmitter<string>();
   private text: string;
-  private _propertyDescription: ModelProperty;
-  @Input() set propertyDescription(desc: ModelProperty) {
+  private _propertyDescription: ModelPropertyType;
+  @Input() set propertyDescription(desc: ModelPropertyType) {
     this._propertyDescription = desc;
     this.updatePlaceholder(desc);
     this.updateHelpText(desc);
-    this.formControl.setValidators(desc.getValidators());
+    this.formControl.setValidators(desc.validators);
   };
-  public setPropertyDescription(desc: ModelProperty) {
+  public setPropertyDescription(desc: ModelPropertyType) {
     this.propertyDescription = desc;
   }
 

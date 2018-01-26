@@ -3,7 +3,6 @@ import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 import {Observable} from 'rxjs/Observable';
 import {RESTModelInterface} from '../model/RESTModelInterface';
 import {hasOwnProperty} from 'tslint/lib/utils';
-import {AutogeneratableOrderableModel} from '../model/AutogeneratableOrderableModel';
 
 const baseUrl = 'http://' + window.location.hostname + ':8091';
 const secondsToCacheInvalidation = 60;
@@ -133,10 +132,6 @@ export abstract class BackendService<T extends RESTModelInterface> {
       }
       if(items.length === 0) {
         resolve();
-        return;
-      }
-      if(!(items[0] instanceof AutogeneratableOrderableModel)) {
-        reject();
         return;
       }
       const patchSet = items.map((d) => {

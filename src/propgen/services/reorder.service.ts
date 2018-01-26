@@ -1,15 +1,15 @@
 import {Injectable} from '@angular/core';
 import {SortableEntity} from '../model/SortableEntity';
-import {AutogeneratableOrderableModel} from '../model/AutogeneratableOrderableModel';
+import {AutogeneratableModel} from '../model/AutogeneratableModel';
 
 @Injectable()
 export class ReorderService {
-  public calculateReordering(sortableEntities: Array<SortableEntity>, data: Array<AutogeneratableOrderableModel>): Array<AutogeneratableOrderableModel> {
+  public calculateReordering(sortableEntities: Array<SortableEntity>, data: Array<AutogeneratableModel>): Array<AutogeneratableModel> {
     // the arrays should always be the same length
     if(sortableEntities.length != data.length) {
       throw new Error("Trying to reorder arrays of different length");
     }
-    let dirty: Array<AutogeneratableOrderableModel> = [];
+    let dirty: Array<AutogeneratableModel> = [];
     let firstDifferingIndex = 0;
     while(firstDifferingIndex < data.length && sortableEntities[firstDifferingIndex].id === data[firstDifferingIndex].id) {
       firstDifferingIndex++;
@@ -25,10 +25,10 @@ export class ReorderService {
     // Array.prototype.slice() does not include the end-index so we do not have to decrement here
     dirty = data.slice(firstDifferingIndex, lastDifferingIndex);
     // get the order properties in the current order of entities
-    let orderProperties = dirty.map((d) => d.order);
+    let orderProperties = dirty.map((d) => d['order']);
     for(let i = firstDifferingIndex; i < lastDifferingIndex; i++) {
       let model = data.find((d) => d.id === sortableEntities[i].id);
-      model.order = orderProperties[i - firstDifferingIndex];
+      model['order'] = orderProperties[i - firstDifferingIndex];
     }
 
     return dirty;

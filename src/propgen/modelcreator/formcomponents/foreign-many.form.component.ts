@@ -1,9 +1,8 @@
 import {Component, EventEmitter, Injector, Input, Output} from '@angular/core';
 import {ModelFormComponent} from './base/model.form.component';
-import {ModelProperty} from '../base/model.property';
-import {BackendService} from '../../services/backend.service';
 import {SortableEntity} from '../../model/SortableEntity';
-import {ForeignModelProperty} from '../base/foreign-model.property';
+import {ModelPropertyType} from '../base/model.property.type';
+import {AutomatedBackendService} from '../../services/automated-backend.service';
 
 @Component({
   selector: 'propgen-foreign-key-form-input',
@@ -14,7 +13,7 @@ import {ForeignModelProperty} from '../base/foreign-model.property';
   '</mat-form-field>'
 })
 export class ForeignManyFormComponent extends ModelFormComponent {
-  constructor(private injector: Injector) {
+  constructor(private backend: AutomatedBackendService, private injector: Injector) {
     super();
     this.formControl.valueChanges.subscribe((value) => {
       this.data = value;
@@ -32,39 +31,22 @@ export class ForeignManyFormComponent extends ModelFormComponent {
     }
   }
   @Output() dataChange = new EventEmitter<Array<number>>();
-  private _propertyDescription: ForeignModelProperty;
-  @Input() set propertyDescription(desc: ForeignModelProperty) {
+  private _propertyDescription: ModelPropertyType;
+  @Input() set propertyDescription(desc: ModelPropertyType) {
     this._propertyDescription = desc;
-    const dataService = (<BackendService<any>>this.injector.get(desc.service));
-    dataService.getAll().subscribe((data) => {
+    this.backend.getAll(desc.foreignType).subscribe((data) => {
       Promise.all(data.map((d) => {
-        return d.toListItem(this.injector);
+        return new desc.foreignType(d).toListItem(this.injector);
       })).then((data) => {
         this.entityList = data;
       });
     });
-    if(desc.verboseName) {
-      this.placeholder = desc.verboseName;
-    }
-    else if(desc.type && desc.type.verboseName) {
-      this.placeholder = desc.type.verboseName;
-    }
-    else {
-      this.updatePlaceholder(desc);
-    }
-    if(desc.helpText) {
-      this.helpText = desc.helpText;
-    }
-    else if(desc.type && desc.type.helpText) {
-      this.helpText = desc.type.helpText;
-    }
-    else {
-      this.updateHelpText(desc);
-    }
-    this.formControl.setValidators(desc.getValidators());
+    this.updatePlaceholder(desc);
+    this.updateHelpText(desc);
+    this.formControl.setValidators(desc.validators);
   };
-  public setPropertyDescription(desc: ModelProperty) {
-    this.propertyDescription = (<ForeignModelProperty>desc);
+  public setPropertyDescription(desc: ModelPropertyType) {
+    this.propertyDescription = desc;
   }
 
   public entityList: SortableEntity[];

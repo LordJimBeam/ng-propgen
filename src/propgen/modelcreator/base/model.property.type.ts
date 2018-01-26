@@ -1,5 +1,7 @@
 import {Type} from '@angular/core';
 import {ModelProperty} from './model.property';
+import {ValidatorFn} from '@angular/forms';
+import {AutogeneratableModel} from '../../model/AutogeneratableModel';
 
 export type ModelPropertyType = {
   type: Type<ModelProperty>;
@@ -9,5 +11,6 @@ export type ModelPropertyType = {
   required?: boolean;
   defaultValue?: any;
   component?: any;
-  typeSpecificData?: Object;
+  validators?: ValidatorFn[];
+  foreignType?: Type<AutogeneratableModel>;
 }

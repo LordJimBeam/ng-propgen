@@ -1,4 +1,4 @@
-import {RESTModelInterface} from './RESTModelInterface';
+import {RESTModelInterface} from '../RESTModelInterface';
 import {Revision} from './Revision';
 
 export class Version<T extends RESTModelInterface> implements RESTModelInterface {

@@ -82,19 +82,28 @@ export class DetailEditorComponent implements ControlValueAccessor, AfterViewIni
       this.propertyContainer.clear();
 
       // we need to resolve the factory for each component only once, so store them in here
-      let factories = {};
-      for(let prop of this._data.getProperties()) {
-        if(!prop.component) {
-          console.warn(prop.name + ' (' + prop.constructor.name + ') has no attached component, skipping ', prop);
+      let properties = this._data.getProperties();
+      for(let key in properties) {
+        let prop = properties[key];
+        let component = prop.component;
+        if(!component) {
+          component = prop.type['component'];
+        }
+        if(!component) {
+          console.warn(prop + ' (' + prop.type + ') has no attached component, skipping ', prop.type);
           continue;
         }
-        let factory = this.resolver.resolveComponentFactory(prop.component);
+        let factory = this.resolver.resolveComponentFactory(component);
+        if(!factory) {
+          console.warn('Could not find a factory for', component);
+          continue;
+        }
         let componentRef = this.propertyContainer.createComponent(factory);
         let instance = (<ModelFormComponent>componentRef.instance);
-        instance.data = this._data[prop.name];
-        instance.dataChange.subscribe((d) => this.data[prop.name] = d);
+        instance.data = this._data[key];
+        instance.dataChange.subscribe((d) => this.data[key] = d);
         instance.setPropertyDescription(prop);
-        this.formGroup.addControl(prop.name, instance.formControl);
+        this.formGroup.addControl(key, instance.formControl);
       }
     }
   }

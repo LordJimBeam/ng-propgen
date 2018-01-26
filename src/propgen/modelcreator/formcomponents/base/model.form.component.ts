@@ -1,11 +1,12 @@
 import {EventEmitter} from '@angular/core';
 import {ModelProperty} from '../../base/model.property';
 import {FormControl} from '@angular/forms';
+import {ModelPropertyType} from '../../base/model.property.type';
 
 export abstract class ModelFormComponent {
   public abstract data: any;
   public abstract dataChange: EventEmitter<any>;
-  public abstract setPropertyDescription(desc: ModelProperty);
+  public abstract setPropertyDescription(desc: ModelPropertyType);
   public placeholder: string;
   public helpText: string;
   protected _formControl: FormControl = new FormControl();
@@ -14,7 +15,7 @@ export abstract class ModelFormComponent {
     return this._formControl;
   }
 
-  protected updatePlaceholder(desc: ModelProperty) {
+  protected updatePlaceholder(desc: ModelPropertyType) {
     if(desc.verboseName) {
       this.placeholder = desc.verboseName;
     }
@@ -22,12 +23,12 @@ export abstract class ModelFormComponent {
       this.placeholder = desc.name.charAt(0).toUpperCase() + desc.name.slice(1);
     }
   }
-  protected updateHelpText(desc: ModelProperty) {
+  protected updateHelpText(desc: ModelPropertyType) {
     if(desc.helpText) {
       this.helpText = desc.helpText;
     }
   }
-  protected get errorText(): string {
+  public get errorText(): string {
     if(this._formControl.errors && this._formControl.errors.required) {
       return 'This property is required';
     }

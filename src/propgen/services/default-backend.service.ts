@@ -1,10 +1,10 @@
-import {Observable} from 'rxjs/Observable';
+import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
-import {AutogeneratableModel} from '../model/AutogeneratableModel';
-import {Injectable} from '@angular/core';
+import {Observable} from 'rxjs/Observable';
+import {Version} from '../model/REST/Version';
 import {hasOwnProperty} from 'tslint/lib/utils';
-import {AutogeneratableOrderableModel} from '../model/AutogeneratableOrderableModel';
+import {RESTModelInterface} from '../model/RESTModelInterface';
 
 const secondsToCacheInvalidation = 60;
 
@@ -15,20 +15,15 @@ export class DefaultBackendService {
   public static get baseUrl() {
     return 'http://localhost:8091';
   }
-  public static pathFromConstructor(constructor) {
-    if(!constructor || !constructor.prototype || !constructor.prototype._autogeneratable) {
-      console.log(constructor);
-    }
-    return constructor.prototype._autogeneratable.backendPath;
-  }
+  // start caching
 
-  private _cachedItems: { [endpoint: string]: BehaviorSubject<AutogeneratableModel[]> } = {};
+  private _cachedItems: { [endpoint: string]: BehaviorSubject<RESTModelInterface[]> } = {};
   private cacheValidUntil: { [endpoint: string]: number } = {};
   private _inProgress: { [endpoint: string]: boolean } = {};
-  private getCachedItems(endpoint: string): AutogeneratableModel[] {
+  private getCachedItems(endpoint: string): RESTModelInterface[] {
     return this._cachedItems[endpoint].getValue();
   }
-  private setCachedItems(endpoint: string, items: AutogeneratableModel[]) {
+  private setCachedItems(endpoint: string, items: RESTModelInterface[]) {
     this._cachedItems[endpoint].next(items);
   }
   protected isCacheValid(endpoint: string): boolean {
@@ -38,7 +33,7 @@ export class DefaultBackendService {
     this.cacheValidUntil[endpoint] = 0;
     this._cachedItems[endpoint] = new BehaviorSubject([]);
   }
-  protected updateCache(endpoint: string, item: AutogeneratableModel) {
+  protected updateCache(endpoint: string, item: RESTModelInterface) {
     let endpointCache = this.getCachedItems(endpoint);
     const index = endpointCache.findIndex(i => item.id === i.id);
     if (index > -1) {
@@ -48,7 +43,7 @@ export class DefaultBackendService {
     }
     this._cachedItems[endpoint].next(endpointCache);
   }
-  protected removeFromCache(endpoint: string, item: AutogeneratableModel) {
+  protected removeFromCache(endpoint: string, item: RESTModelInterface) {
     let endpointCache = this.getCachedItems(endpoint);
     const index = endpointCache.findIndex(i => i.id === item.id);
     if (index > -1) {
@@ -61,8 +56,11 @@ export class DefaultBackendService {
     }
   }
 
-  public getAll(constructor): Observable<AutogeneratableModel[]> {
-    const endpoint = DefaultBackendService.pathFromConstructor(constructor);
+  // end caching
+
+  // start public interfaces
+
+  public getAll(endpoint: string): Observable<RESTModelInterface[]> {
     if(!(endpoint in this._cachedItems)) {
       this.resetCache(endpoint);
     }
@@ -70,7 +68,7 @@ export class DefaultBackendService {
       this._inProgress[endpoint] = true;
       this.internalRetrieveAllItems(endpoint).subscribe(data => {
         this._inProgress[endpoint] = false;
-        this.setCachedItems(endpoint, data.object_list.map(d => new constructor(d)));
+        this.setCachedItems(endpoint, data.object_list);
         this.cacheValidUntil[endpoint] = Date.now() + (1000 * secondsToCacheInvalidation);
       }, (error) => {
         this._inProgress[endpoint] = false;
@@ -79,8 +77,7 @@ export class DefaultBackendService {
     }
     return new Observable(fn => this._cachedItems[endpoint].subscribe(fn));
   }
-  public get(constructor, id): Promise<AutogeneratableModel> {
-    const endpoint = DefaultBackendService.pathFromConstructor(constructor);
+  public get(endpoint: string, id: number): Promise<RESTModelInterface> {
     if(!(endpoint in this._cachedItems)) {
       this.resetCache(endpoint);
     }
@@ -93,16 +90,14 @@ export class DefaultBackendService {
         }
       }
       this.internalRetrieveItem(endpoint, id).subscribe(data => {
-        const item = new constructor(data.sm);
-        resolve(item);
-        this.updateCache(endpoint, item);
+        resolve(data.sm);
+        this.updateCache(endpoint, data.sm);
       }, (error) => {
         reject(error);
       });
     });
   }
-  public save(constructor, item: AutogeneratableModel): Promise<void> {
-    const endpoint = DefaultBackendService.pathFromConstructor(constructor);
+  public save(endpoint, item: RESTModelInterface): Promise<void> {
     if(!(endpoint in this._cachedItems)) {
       this.resetCache(endpoint);
     }
@@ -111,7 +106,6 @@ export class DefaultBackendService {
         reject();
         return;
       }
-      item = new constructor(item);
       const oldItem = this.getCachedItems(endpoint).find(f => f.id === item.id);
       if (oldItem) {
         this.internalUpdateItem(endpoint, item).subscribe(() => {
@@ -126,14 +120,13 @@ export class DefaultBackendService {
           delete item['id'];
         }
         this.internalCreateItem(endpoint, item).subscribe((result) => {
-          this.updateCache(endpoint, new constructor(result));
+          this.updateCache(endpoint, result);
           resolve();
         }, (error) => reject(error));
       }
     });
   }
-  public delete(constructor, item: AutogeneratableModel): Promise<void> {
-    const endpoint = DefaultBackendService.pathFromConstructor(constructor);
+  public delete(endpoint, item: RESTModelInterface): Promise<void> {
     if(!(endpoint in this._cachedItems)) {
       this.resetCache(endpoint);
     }
@@ -150,8 +143,7 @@ export class DefaultBackendService {
       });
     });
   }
-  public saveOrder(constructor, items: AutogeneratableModel[]): Promise<void> {
-    const endpoint = DefaultBackendService.pathFromConstructor(constructor);
+  public saveOrder(endpoint, items: RESTModelInterface[]): Promise<void> {
     if(!(endpoint in this._cachedItems)) {
       this.resetCache(endpoint);
     }
@@ -162,10 +154,6 @@ export class DefaultBackendService {
       }
       if(items.length === 0) {
         resolve();
-        return;
-      }
-      if(!(items[0] instanceof AutogeneratableOrderableModel)) {
-        reject();
         return;
       }
       const patchSet = items.map((d) => {
@@ -181,7 +169,32 @@ export class DefaultBackendService {
       });
     });
   }
-  protected internalCreateItem(path: string, item: AutogeneratableModel): Observable<any> {
+
+  // start versioning
+  public getVersions(endpoint, id: number): Promise<Array<Version<RESTModelInterface>>> {
+    return new Promise((resolve, reject) => {
+      this.http.get<any>(DefaultBackendService.baseUrl + endpoint + '/' + id + '/Version/').subscribe((data) => {
+        resolve(data.versions.map((d) => new Version(d)));
+      }, (error) => {
+        reject(error);
+      });
+    });
+  }
+  public getVersion(endpoint, id: number, versionId: number): Promise<Version<RESTModelInterface>> {
+    return new Promise((resolve, reject) => {
+      this.http.get<any>(DefaultBackendService.baseUrl + endpoint + '/' + id + '/Version/' + versionId + '/').subscribe((data) => {
+        resolve(new Version(data.version));
+      }, (error) => {
+        reject(error);
+      });
+    });
+  }
+  // end versioning
+
+  // end public interfaces
+
+  // start internals
+  protected internalCreateItem(path: string, item: RESTModelInterface): Observable<any> {
     return this.http.post(DefaultBackendService.baseUrl + path + '/', item);
   }
   protected internalRetrieveItem(path: string, id: number): Observable<any> {
@@ -190,10 +203,11 @@ export class DefaultBackendService {
   protected internalRetrieveAllItems(path: string): Observable<any> {
     return this.http.get(DefaultBackendService.baseUrl + path + '/');
   }
-  protected internalUpdateItem(path: string, item: AutogeneratableModel): Observable<any> {
+  protected internalUpdateItem(path: string, item: RESTModelInterface): Observable<any> {
     return this.http.put(DefaultBackendService.baseUrl + path + '/' + item.id + '/', item);
   }
   protected internalDeleteItem(path: string, id: number): Observable<any> {
     return this.http.delete(DefaultBackendService.baseUrl + path + '/' + id + '/');
   }
+  // end internals
 }

@@ -1,6 +1,6 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {ModelFormComponent} from './base/model.form.component';
-import {ModelProperty} from '../base/model.property';
+import {ModelPropertyType} from '../base/model.property.type';
 
 @Component({
   selector: 'propgen-string-form-input',
@@ -28,21 +28,21 @@ export class StringFormComponent extends ModelFormComponent {
     }
   }
   @Output() dataChange = new EventEmitter<string>();
-  private _propertyDescription: ModelProperty;
-  @Input() set propertyDescription(desc: ModelProperty) {
+  private _propertyDescription: ModelPropertyType;
+  @Input() set propertyDescription(desc: ModelPropertyType) {
     this._propertyDescription = desc;
     this.updatePlaceholder(desc);
     this.updateHelpText(desc);
-    this.formControl.setValidators(desc.getValidators());
+    this.formControl.setValidators(desc.validators);
   };
-  public setPropertyDescription(desc: ModelProperty) {
+  public setPropertyDescription(desc: ModelPropertyType) {
     this.propertyDescription = desc;
   }
   protected getErrorText(): string {
-    if('minlength' in this.formControl.errors) {
+    if(this.formControl.hasError('minlength')) {
       return 'Must be at least ' + this.formControl.errors.minlength.requiredLength + ' characters';
     }
-    if('maxlength' in this.formControl.errors) {
+    if(this.formControl.hasError('maxlength')) {
       return 'May not be longer than ' + this.formControl.errors.maxlength.requiredLength + ' characters';
     }
   }
