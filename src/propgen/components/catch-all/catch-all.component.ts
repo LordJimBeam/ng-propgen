@@ -24,7 +24,7 @@ export class RouteRegistry {
         console.warn('Trying to register path ', r, ' multiple times');
       }
       else {
-        console.log('Registering', r.path);
+        // console.log('Registering', r.path);
         this.routes[r.path] = {
           constructor: constructor,
           mode: r.mode,
@@ -70,7 +70,7 @@ export class RouteRegistry {
 
 @Component({
   selector: 'propgen-catch-all',
-  template:
+  template: '<propgen-root></propgen-root>' +
   '<ng-container [ngSwitch]="mode">' +
   '  <propgen-automatic-model-form-list [type]="type" [params]="params" *ngSwitchCase="modeType.List"></propgen-automatic-model-form-list>' +
   '  <propgen-automatic-model-form [type]="type" [params]="params" *ngSwitchCase="modeType.Detail"></propgen-automatic-model-form>' +

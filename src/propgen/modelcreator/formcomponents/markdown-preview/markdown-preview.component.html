@@ -1,10 +1,10 @@
 <div class="md-preview-container">
-  <div class="md-preview-input">
+  <div [ngClass]="{'md-preview-input': !previewPopout, 'md-preview-input-popout': previewPopout}">
     <mat-form-field class="md-fullwidth md-minheight">
       <textarea class="md-minheight" matInput [(ngModel)]="data" placeholder="{{placeholder}}"></textarea>
     </mat-form-field>
   </div>
-  <div class="md-preview">
+  <div class="md-preview" *ngIf="!previewPopout">
     <div class="mat-form-field mat-form-field-should-float mat-form-field-can-float md-fullwidth">
       <div class="mat-input-wrapper mat-form-field-wrapper">
         <div class="mat-input-infix mat-form-field-infix md-fullwidth">
@@ -17,3 +17,4 @@
     </div>
   </div>
 </div>
+<button mat-icon-button (click)="onPopout()"><mat-icon>open_in_new</mat-icon></button>

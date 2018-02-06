@@ -1,4 +1,3 @@
-import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import {MenuComponent} from './components/menu/menu.component';
 import {
@@ -32,11 +31,9 @@ import {AutomatedBackendService} from './services/automated-backend.service';
 import {CatchAllComponent} from './components/catch-all/catch-all.component';
 import {DefaultBackendService} from './services/default-backend.service';
 
-import {
-  Deliverable, DisseminationType, Milestone, Partner, PartnerType, ProducableType, Project, Setting, Task, Template,
-  Textblock, Workpackage
-} from './model/REST';
 import {AutomatedShakePreventionService} from './services/automated-shake-prevention.service';
+import {CommonModule} from '@angular/common';
+import {PropgenSharedModule} from '../shared/shared.module';
 
 const catchAll: Routes = [
   {
@@ -45,7 +42,7 @@ const catchAll: Routes = [
   },
   {
     path: '**',
-    component: CatchAllComponent
+    component: CatchAllComponent,
   }
 ];
 
@@ -71,7 +68,7 @@ const catchAll: Routes = [
     TextFormComponent
   ],
   imports: [
-    BrowserModule,
+    CommonModule,
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
@@ -79,6 +76,8 @@ const catchAll: Routes = [
 
     SortablejsModule,
     MarkdownModule,
+
+    PropgenSharedModule,
 
     MatButtonModule,
     MatFormFieldModule,

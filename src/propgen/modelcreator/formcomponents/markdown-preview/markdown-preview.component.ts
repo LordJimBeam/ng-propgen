@@ -1,18 +1,23 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnDestroy, Output} from '@angular/core';
 import {ModelFormComponent} from '../base/model.form.component';
 import {ModelPropertyType} from '../../base/model.property.type';
+import 'rxjs/add/operator/debounceTime';
+import {MessageWindow, WindowService} from '../../../../shared/services/window.service';
 
 @Component({
   selector: 'propgen-markdown-preview',
   templateUrl: './markdown-preview.component.html',
   styleUrls: ['./markdown-preview.component.css']
 })
-export class MarkdownPreviewComponent extends ModelFormComponent {
-  constructor() {
+export class MarkdownPreviewComponent extends ModelFormComponent implements OnDestroy {
+  constructor(protected windowService: WindowService) {
     super();
     this.formControl.valueChanges.subscribe((value) => {
       this.data = value;
     });
+    this.dataChange.asObservable().debounceTime(600).subscribe(() => {
+      this.updatePreviewPopoutData();
+    })
   }
   get data() {
     return this.text;
@@ -22,6 +27,9 @@ export class MarkdownPreviewComponent extends ModelFormComponent {
       this.text = text;
       this.dataChange.emit(text);
       this.formControl.setValue(text);
+      if(this.previewWindow) {
+        this.previewWindow.sendMessage('textUpdated', text);
+      }
     }
   }
   @Output() dataChange = new EventEmitter<string>();
@@ -35,6 +43,48 @@ export class MarkdownPreviewComponent extends ModelFormComponent {
   };
   public setPropertyDescription(desc: ModelPropertyType) {
     this.propertyDescription = desc;
+  }
+  ngOnDestroy() {
+    this.closePreviewPopout();
+  }
+  public previewPopout = false;
+  private previewWindow: MessageWindow = null;
+  public onPopout() {
+    if(!this.previewPopout) {
+      // we currently do not have a window up, create one
+      this.previewWindow = this.windowService.createWindow('/popout/markdown/');
+      this.previewWindow.onClose.subscribe(() => {
+        this.onPopoutClose();
+      });
+      // we need to delay updating until the popout finished loading
+      // TODO: make this event based as well
+      setTimeout(() => {
+        this.updatePreviewPopoutData();
+      }, 1500);
+    }
+    else {
+      this.closePreviewPopout();
+    }
+  }
+  public onPopoutClose() {
+    if(this.previewWindow) {
+      this.previewPopout = false;
+      this.previewWindow = null;
+    }
+  }
+
+  private closePreviewPopout() {
+    if(this.previewWindow) {
+      this.previewWindow.close();
+    }
+  }
+
+  private updatePreviewPopoutData() {
+    if(this.previewWindow) {
+      console.log('Sending update');
+      this.previewWindow.sendMessage('textUpdated', this.data);
+      this.previewPopout = true;
+    }
   }
 
 }

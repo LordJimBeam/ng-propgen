@@ -64,7 +64,7 @@ export class AutomaticModelFormComponent implements OnDestroy {
       else {
         try {
           // got a number less than 1 or a string => create new item
-          this.data = this._type({});
+          this.data = new this._type({});
           this.ready = true;
         }
         catch(error) {
