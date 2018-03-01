@@ -5,15 +5,14 @@ import {Observable} from 'rxjs/Observable';
 import {Version} from '../model/REST/Version';
 import {hasOwnProperty} from 'tslint/lib/utils';
 import {RESTModelInterface} from '../model/RESTModelInterface';
-
-const secondsToCacheInvalidation = 60;
+import {environment} from '../../environments/environment';
 
 @Injectable()
 export class DefaultBackendService {
   constructor(protected http: HttpClient) {}
 
   public static get baseUrl() {
-    return 'http://localhost:8091';
+    return environment.backend;
   }
   // start caching
 
@@ -69,7 +68,7 @@ export class DefaultBackendService {
       this.internalRetrieveAllItems(endpoint).subscribe(data => {
         this._inProgress[endpoint] = false;
         this.setCachedItems(endpoint, data.object_list);
-        this.cacheValidUntil[endpoint] = Date.now() + (1000 * secondsToCacheInvalidation);
+        this.cacheValidUntil[endpoint] = Date.now() + (1000 * environment.cacheValidTime);
       }, (error) => {
         this._inProgress[endpoint] = false;
         this._cachedItems[endpoint].error(error);

@@ -2,7 +2,6 @@ import {Component, Injector, Input, OnDestroy} from '@angular/core';
 import {SortableEntity} from '../../model/SortableEntity';
 import {Router} from '@angular/router';
 import {AutogeneratableModel} from '../../model/AutogeneratableModel';
-import {BackendService} from '../../services/backend.service';
 import {ReorderService} from '../../services/reorder.service';
 import {AutomatedBackendService} from '../../services/automated-backend.service';
 import {AutogeneratableSettings} from '../../decorators/autogeneratable.decorator';
@@ -37,7 +36,6 @@ export class AutomaticModelFormListComponent implements OnDestroy {
   protected path: string;
   public hasVersioning: boolean = false;
   public canReorder: boolean = false;
-  protected service: BackendService<any>;
   private onReceiveData(next: RESTModelInterface[]) {
     this.data = next.map(d => new this._type(d));
     Promise.all(this.data.map((d) => {
