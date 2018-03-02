@@ -2,6 +2,17 @@
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.6.0.
 
+## First time setup (Also see the [official documentation](https://angular.io/guide/quickstart))
+* Make sure you have `node >= 6.9.x` and `npm >= 3.x.x` installed
+* Install [Angular CLI](https://github.com/angular/angular-cli):
+```
+npm install -g @angular/cli
+```
+* Enter the project's root directory and install the dependencies:
+```
+npm install
+```
+
 ## Development server
 
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
