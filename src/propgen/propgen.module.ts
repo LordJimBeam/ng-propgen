@@ -34,11 +34,18 @@ import {DefaultBackendService} from './services/default-backend.service';
 import {AutomatedShakePreventionService} from './services/automated-shake-prevention.service';
 import {CommonModule} from '@angular/common';
 import {PropgenSharedModule} from '../shared/shared.module';
+import {CrossTableComponent} from './components/cross-table/cross-table.component';
+import {TaskPartnerEffortComponent} from './components/task-partner-effort/task-partner-effort.component';
+import {NgxDatatableModule} from '@swimlane/ngx-datatable';
 
 const catchAll: Routes = [
   {
     path: '',
     component: MenuComponent,
+  },
+  {
+    path: 'taskpartnerpms',
+    component: TaskPartnerEffortComponent,
   },
   {
     path: '**',
@@ -53,10 +60,12 @@ const catchAll: Routes = [
     AutomaticModelFormVersionComponent,
     AutomaticModelFormVersionListComponent,
     CatchAllComponent,
+    CrossTableComponent,
     DetailEditorComponent,
     MenuComponent,
     RootComponent,
     SortableListComponent,
+    TaskPartnerEffortComponent,
 
     BooleanFormComponent,
     EmailFormComponent,
@@ -76,6 +85,7 @@ const catchAll: Routes = [
 
     SortablejsModule,
     MarkdownModule,
+    NgxDatatableModule,
 
     PropgenSharedModule,
 
