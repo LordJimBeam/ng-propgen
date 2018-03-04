@@ -7,7 +7,7 @@ import {Validators} from '@angular/forms';
 import {RouteMode} from '../../components/catch-all/catch-all.component';
 
 @Autogeneratable({
-  backendPath: '/DisseminationType',
+  backendPath: '/DisseminationTypes',
   routes: [
     {
       path: 'disseminationtypes',
