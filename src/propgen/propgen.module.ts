@@ -37,6 +37,7 @@ import {PropgenSharedModule} from '../shared/shared.module';
 import {CrossTableComponent} from './components/cross-table/cross-table.component';
 import {TaskPartnerEffortComponent} from './components/task-partner-effort/task-partner-effort.component';
 import {NgxDatatableModule} from '@swimlane/ngx-datatable';
+import {DeliverablePartnerTaskEffortComponent} from './components/deliverable-partner-task-effort/deliverable-partner-task-effort.component';
 
 const catchAll: Routes = [
   {
@@ -46,6 +47,10 @@ const catchAll: Routes = [
   {
     path: 'taskpartnerpms',
     component: TaskPartnerEffortComponent,
+  },
+  {
+    path: 'deliverablepartnertaskpms',
+    component: DeliverablePartnerTaskEffortComponent,
   },
   {
     path: '**',
@@ -61,6 +66,7 @@ const catchAll: Routes = [
     AutomaticModelFormVersionListComponent,
     CatchAllComponent,
     CrossTableComponent,
+    DeliverablePartnerTaskEffortComponent,
     DetailEditorComponent,
     MenuComponent,
     RootComponent,
