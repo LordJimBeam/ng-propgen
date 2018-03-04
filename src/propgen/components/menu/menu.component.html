@@ -1,13 +1,6 @@
 <propgen-root></propgen-root>
 <h1 class="mat-headline">Proposal editing made easy</h1>
 <mat-tab-group>
-  <mat-tab label="Basic data">
-    <mat-list>
-      <mat-list-item><a routerLink="/project" mat-button>Project data</a></mat-list-item>
-      <mat-list-item><a routerLink="/templates" mat-button>Templates</a></mat-list-item>
-      <mat-list-item><a routerLink="/settings" mat-button>Settings</a></mat-list-item>
-    </mat-list>
-  </mat-tab>
   <mat-tab label="Proposal elements">
     <mat-list>
       <mat-list-item><a routerLink="/textblocks" mat-button>Generic textblocks</a></mat-list-item>
@@ -34,6 +27,13 @@
       <mat-list-item><button mat-button disabled>Pick individual template to run</button></mat-list-item>
       <mat-list-item><button mat-button disabled>Produce all output files (PDF)</button></mat-list-item>
       <mat-list-item><button mat-button disabled>Pick a single output file to produce</button></mat-list-item>
+    </mat-list>
+  </mat-tab>
+  <mat-tab label="Basic data">
+    <mat-list>
+      <mat-list-item><a routerLink="/project" mat-button>Project data</a></mat-list-item>
+      <mat-list-item><a routerLink="/templates" mat-button>Templates</a></mat-list-item>
+      <mat-list-item><a routerLink="/settings" mat-button>Settings</a></mat-list-item>
     </mat-list>
   </mat-tab>
 </mat-tab-group>

@@ -1,6 +1,5 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {SortableEntity} from '../../model/SortableEntity';
-import {isNumber} from 'util';
 
 export type CrossTableValue = {
   colId: number,
