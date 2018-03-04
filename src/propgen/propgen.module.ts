@@ -38,6 +38,7 @@ import {CrossTableComponent} from './components/cross-table/cross-table.componen
 import {TaskPartnerEffortComponent} from './components/task-partner-effort/task-partner-effort.component';
 import {NgxDatatableModule} from '@swimlane/ngx-datatable';
 import {DeliverablePartnerTaskEffortComponent} from './components/deliverable-partner-task-effort/deliverable-partner-task-effort.component';
+import {MilestonePartnerTaskEffortComponent} from './components/milestone-partner-task-effort/milestone-partner-task-effort.component';
 
 const catchAll: Routes = [
   {
@@ -51,6 +52,10 @@ const catchAll: Routes = [
   {
     path: 'deliverablepartnertaskpms',
     component: DeliverablePartnerTaskEffortComponent,
+  },
+  {
+    path: 'milestonepartnertaskpms',
+    component: MilestonePartnerTaskEffortComponent,
   },
   {
     path: '**',
@@ -69,6 +74,7 @@ const catchAll: Routes = [
     DeliverablePartnerTaskEffortComponent,
     DetailEditorComponent,
     MenuComponent,
+    MilestonePartnerTaskEffortComponent,
     RootComponent,
     SortableListComponent,
     TaskPartnerEffortComponent,
